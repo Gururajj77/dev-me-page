@@ -37,9 +37,12 @@ export function Contact() {
         </h2>
       </div>
 
-      <div className="relative">
-        <div aria-hidden="true" className="slab absolute top-3 left-3 h-full w-full bg-ink" />
-        <form onSubmit={onSubmit} className="slab relative bg-hot p-5 text-white md:p-7">
+      <div className="slab-stack">
+        <div aria-hidden="true" className="slab-stack__shadow bg-ink" />
+        <form
+          onSubmit={onSubmit}
+          className="slab slab-stack__face bg-hot p-5 text-white md:p-7"
+        >
           <p className="mb-5 text-sm font-bold text-white/90">
             Or mail{" "}
             <a href={site.links.email} className="bg-sun px-1 text-ink underline">

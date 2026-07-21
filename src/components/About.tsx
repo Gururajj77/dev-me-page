@@ -15,19 +15,17 @@ export function About() {
         </span>
       </div>
 
-      <div className="relative">
-        <div
-          aria-hidden="true"
-          className="slab absolute inset-2 bg-hot opacity-90"
-        />
-        <div className="slab relative bg-white p-5 md:p-8">
+      <div className="slab-stack">
+        <div aria-hidden="true" className="slab-stack__shadow bg-hot" />
+        <div className="slab slab-stack__face bg-white p-5 md:p-8">
           <h2
             id="about-heading"
-            className="display mb-5 text-[clamp(2.2rem,6vw,3.75rem)]"
+            className="display mb-5 text-[clamp(1.85rem,7vw,3.75rem)]"
           >
-            I build the boring
+            I build the
             <br />
-            infrastructure
+            boring infra
+            <br />
             <span className="bg-sun px-1">people love</span>
             <br />
             to forget.

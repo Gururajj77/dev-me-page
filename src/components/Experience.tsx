@@ -28,7 +28,7 @@ export function Experience() {
               index % 2 === 0 ? "offset-1" : "offset-2"
             }`}
           >
-            <span className="stamp absolute -top-3 right-4 bg-ink text-paper md:-right-3">
+            <span className="stamp absolute -top-3 right-3 bg-ink text-paper">
               {item.period}
             </span>
             <p className="text-xs font-bold tracking-widest uppercase opacity-60">

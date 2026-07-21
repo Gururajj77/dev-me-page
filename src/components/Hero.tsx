@@ -82,14 +82,14 @@ export function Hero() {
           </p>
           <h1
             data-hero-item
-            className="display text-[clamp(4rem,16vw,8.5rem)]"
+            className="display text-[clamp(3.25rem,14vw,8.5rem)]"
           >
             Guru
             <br />
             raj<span className="text-hot">*</span>
           </h1>
           <div data-hero-item className="slab relative mt-7 max-w-xl bg-white p-4 md:p-5">
-            <span className="stamp absolute -top-3 -right-2 bg-sun">
+            <span className="stamp absolute -top-3 right-2 bg-sun sm:-right-2">
               No template
             </span>
             <p className="text-[0.98rem] leading-snug md:text-[1.08rem]">

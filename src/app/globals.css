@@ -24,6 +24,8 @@
     scroll-behavior: smooth;
     background: var(--color-paper);
     color: var(--color-ink);
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -34,6 +36,7 @@
 
   body {
     min-height: 100vh;
+    max-width: 100%;
     overflow-x: clip;
     background-color: var(--color-paper);
     background-image:
@@ -73,14 +76,19 @@
   .page {
     position: relative;
     z-index: 1;
-    width: min(1100px, calc(100% - 1.5rem));
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1100px;
     margin-inline: auto;
+    /* Side padding absorbs brutal shadows + hanging stamps */
+    padding-inline: 1.25rem;
     padding-block: 1.25rem 4rem;
+    overflow-x: clip;
   }
 
   @media (min-width: 768px) {
     .page {
-      width: min(1100px, calc(100% - 3rem));
+      padding-inline: 1.75rem;
       padding-block: 2rem 5rem;
     }
   }
@@ -88,7 +96,13 @@
   .slab {
     border: 4px solid var(--color-ink);
     background: var(--color-paper);
-    box-shadow: var(--shadow-brutal);
+    box-shadow: 4px 4px 0 var(--color-ink);
+  }
+
+  @media (min-width: 768px) {
+    .slab {
+      box-shadow: var(--shadow-brutal);
+    }
   }
 
   .slab-sm {
@@ -100,8 +114,11 @@
     font-family: var(--font-display);
     font-weight: 800;
     letter-spacing: -0.045em;
-    line-height: 0.92;
+    line-height: 0.95;
     text-transform: uppercase;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
   }
 
   .stamp {
@@ -114,7 +131,13 @@
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    box-shadow: var(--shadow-brutal-sm);
+    box-shadow: 2px 2px 0 var(--color-ink);
+  }
+
+  @media (min-width: 768px) {
+    .stamp {
+      box-shadow: var(--shadow-brutal-sm);
+    }
   }
 
   .btn {
@@ -132,10 +155,16 @@
     text-decoration: none;
     color: var(--color-ink);
     background: var(--color-sun);
-    box-shadow: var(--shadow-brutal-sm);
+    box-shadow: 2px 2px 0 var(--color-ink);
     transition:
       transform 0.1s steps(2, end),
       box-shadow 0.1s steps(2, end);
+  }
+
+  @media (min-width: 768px) {
+    .btn {
+      box-shadow: var(--shadow-brutal-sm);
+    }
   }
 
   .btn:hover {
@@ -180,6 +209,7 @@
 
   .saw {
     height: 22px;
+    max-width: 100%;
     clip-path: polygon(
       0 100%,
       0 40%,
@@ -213,14 +243,42 @@
     background: var(--color-ink);
   }
 
-  .offset-1 {
-    transform: rotate(-1.5deg);
+  /* Fake double-slab without spilling past the viewport */
+  .slab-stack {
+    position: relative;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    max-width: 100%;
   }
-  .offset-2 {
-    transform: rotate(1.75deg);
+
+  .slab-stack__shadow {
+    position: absolute;
+    inset: 0.5rem 0 0 0.5rem;
+    border: 4px solid var(--color-ink);
+    pointer-events: none;
   }
+
+  .slab-stack__face {
+    position: relative;
+    max-width: 100%;
+  }
+
+  .offset-1,
+  .offset-2,
   .offset-3 {
-    transform: rotate(-2.5deg);
+    transform: none;
+  }
+
+  @media (min-width: 768px) {
+    .offset-1 {
+      transform: rotate(-1.5deg);
+    }
+    .offset-2 {
+      transform: rotate(1.75deg);
+    }
+    .offset-3 {
+      transform: rotate(-2.5deg);
+    }
   }
 
   .section-gap {
