@@ -14,7 +14,7 @@ export function SectionTracker() {
 
   const syncActive = useCallback(() => {
     const marker = window.scrollY + window.innerHeight * 0.32;
-    let current = sectionNav[0].id;
+    let current: (typeof sectionNav)[number]["id"] = sectionNav[0].id;
 
     for (const item of sectionNav) {
       const el = document.getElementById(item.id);

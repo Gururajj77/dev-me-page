@@ -5,6 +5,10 @@ const root = process.cwd();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
   outputFileTracingRoot: path.join(root),
   turbopack: {
     root: path.join(root),
