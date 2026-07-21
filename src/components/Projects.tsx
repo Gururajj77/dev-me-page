@@ -27,7 +27,7 @@ export function Projects() {
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`slab group block overflow-hidden transition-[transform,box-shadow] duration-100 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_#101010] ${
+                className={`slab group block overflow-hidden transition-[transform,box-shadow] duration-100 hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0_var(--color-ink)] ${
                 index % 2 === 0 ? "bg-ink text-paper" : "bg-hot text-white"
               }`}
             >
