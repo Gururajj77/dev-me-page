@@ -18,83 +18,81 @@ export function Contact() {
     window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
   };
 
-  const field =
-    "w-full border-4 border-ink bg-white px-3 py-3 font-mono text-sm outline-none focus:bg-sun";
-
   return (
     <SectionReveal
       id="contact"
       ariaLabelledBy="contact-heading"
-      className="section-gap"
+      className="section-block border-t border-border py-14 sm:py-16"
     >
-      <div className="mb-4 flex items-center gap-3">
-        <span className="stamp bg-hot text-white">07</span>
-        <h2
-          id="contact-heading"
-          className="display text-[clamp(2rem,5vw,3rem)]"
+      <p className="eyebrow-rule section-label mb-6">Contact</p>
+      <h2
+        id="contact-heading"
+        className="text-[clamp(1.65rem,3.5vw,2.15rem)] font-medium tracking-[-0.03em] text-fg"
+      >
+        Get in touch.
+      </h2>
+      <p className="mt-4 max-w-xl text-[1.025rem] leading-relaxed text-muted">
+        Prefer email?{" "}
+        <a
+          href={site.links.email}
+          className="link-underline text-fg"
         >
-          Hit send
-        </h2>
-      </div>
+          {site.email}
+        </a>
+      </p>
 
-      <div className="slab-stack">
-        <div aria-hidden="true" className="slab-stack__shadow bg-ink" />
-        <form
-          onSubmit={onSubmit}
-          className="slab slab-stack__face bg-hot p-5 text-white md:p-7"
+      <form onSubmit={onSubmit} className="mt-10 max-w-xl space-y-5">
+        <div>
+          <label htmlFor="name" className="mb-2 block text-sm text-faint">
+            Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            autoComplete="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full border border-border bg-transparent px-3.5 py-3 text-[1rem] text-fg outline-none transition-colors placeholder:text-faint/60 focus:border-border-strong"
+            placeholder="Your name"
+          />
+        </div>
+        <div>
+          <label htmlFor="email" className="mb-2 block text-sm text-faint">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full border border-border bg-transparent px-3.5 py-3 text-[1rem] text-fg outline-none transition-colors placeholder:text-faint/60 focus:border-border-strong"
+            placeholder="you@company.com"
+          />
+        </div>
+        <div>
+          <label htmlFor="message" className="mb-2 block text-sm text-faint">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={5}
+            required
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-full resize-y border border-border bg-transparent px-3.5 py-3 text-[1rem] text-fg outline-none transition-colors placeholder:text-faint/60 focus:border-border-strong"
+            placeholder="What are you working on?"
+          />
+        </div>
+        <button
+          type="submit"
+          className="inline-flex items-center justify-center border border-border-strong bg-fg px-5 py-2.5 text-sm font-medium tracking-[-0.01em] text-bg transition-opacity hover:opacity-90"
         >
-          <p className="mb-5 text-sm font-bold text-white/90">
-            Or mail{" "}
-            <a href={site.links.email} className="bg-sun px-1 text-ink underline">
-              {site.email}
-            </a>
-          </p>
-          <div className="space-y-4 text-ink">
-            <div>
-              <label htmlFor="name" className="mb-1 block text-xs font-bold text-white uppercase">
-                Name
-              </label>
-              <input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className={field}
-                placeholder="WHO DIS"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="mb-1 block text-xs font-bold text-white uppercase">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={field}
-                placeholder="you@company.com"
-              />
-            </div>
-            <div>
-              <label htmlFor="message" className="mb-1 block text-xs font-bold text-white uppercase">
-                Message
-              </label>
-              <textarea
-                id="message"
-                required
-                rows={4}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className={field}
-                placeholder="SAY THE THING"
-              />
-            </div>
-            <button type="submit" className="btn btn-ink">
-              Fire message →
-            </button>
-          </div>
-        </form>
-      </div>
+          Send message
+        </button>
+      </form>
     </SectionReveal>
   );
 }

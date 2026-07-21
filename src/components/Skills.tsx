@@ -2,52 +2,45 @@ import { skillGroups } from "@/lib/content";
 import { SectionReveal } from "@/components/SectionReveal";
 import { SkillIcon } from "@/components/SkillIcon";
 
-const accents = ["bg-sun", "bg-ice", "bg-hot text-white", "bg-white"];
+const groupLabel: Record<string, string> = {
+  Frontend: "Frontend",
+  "Platform & Infrastructure": "Platform",
+  "Developer Experience": "DX",
+  Tools: "Tools",
+};
 
 export function Skills() {
   return (
     <SectionReveal
       id="skills"
       ariaLabelledBy="skills-heading"
-      className="section-gap"
+      className="section-block border-t border-border py-14 sm:py-16"
     >
-      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <span className="stamp bg-ink text-paper">02</span>
-          <h2 id="skills-heading" className="display text-[clamp(2rem,5vw,3rem)]">
-            Toolkit dump
-          </h2>
-        </div>
-        <p className="max-w-[16rem] text-right text-[0.7rem] font-bold uppercase opacity-60">
-          Dense on purpose. Resume, not vibes.
-        </p>
-      </div>
+      <p className="eyebrow-rule section-label mb-4">Skills</p>
+      <h2
+        id="skills-heading"
+        className="text-[clamp(1.65rem,3.5vw,2.15rem)] font-medium tracking-[-0.03em] text-fg"
+      >
+        Toolkit.
+      </h2>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        {skillGroups.map((group, i) => (
+      <div className="mt-7 space-y-4">
+        {skillGroups.map((group) => (
           <div
             key={group.group}
-            className={`slab p-4 ${accents[i % accents.length]} ${
-              i % 2 === 0 ? "offset-1" : "offset-2"
-            }`}
+            className="grid items-start gap-2 sm:grid-cols-[5.5rem_1fr] sm:gap-5"
           >
-            <div className="mb-3 flex items-center justify-between border-b-4 border-ink pb-2">
-              <h3 className="display text-lg md:text-xl">
-                {group.group === "Platform & Infrastructure"
-                  ? "Platform"
-                  : group.group === "Developer Experience"
-                    ? "DX"
-                    : group.group}
-              </h3>
-              <span className="text-xs font-bold">
-                {String(group.items.length).padStart(2, "0")}
-              </span>
-            </div>
-            <ul className="flex flex-wrap gap-2">
+            <h3 className="pt-1.5 text-[0.6875rem] tracking-[0.14em] text-faint uppercase">
+              {groupLabel[group.group] ?? group.group}
+            </h3>
+            <ul className="flex flex-wrap gap-1.5" aria-label={group.group}>
               {group.items.map((item) => (
                 <li key={item.name}>
-                  <span className="chip text-ink">
-                    <SkillIcon id={item.icon} className="size-3.5" />
+                  <span className="inline-flex items-center gap-1.5 border border-border py-1 pr-2 pl-1.5 text-[0.75rem] leading-none text-muted transition-colors hover:border-border-strong hover:text-fg sm:text-[0.8125rem]">
+                    <SkillIcon
+                      id={item.icon}
+                      className="size-3.5 shrink-0 opacity-75"
+                    />
                     {item.name}
                   </span>
                 </li>
