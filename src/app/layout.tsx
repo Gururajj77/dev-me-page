@@ -1,41 +1,34 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Mono, Syne } from "next/font/google";
 import { JsReady } from "@/components/JsReady";
 import { site } from "@/lib/content";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["700", "800"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceMono = Space_Mono({
+  variable: "--font-mono-body",
   subsets: ["latin"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: site.title,
+  title: `${site.name} — Brutal Me Page`,
   description: site.description,
   authors: [{ name: site.name }],
   creator: site.name,
   openGraph: {
-    title: site.title,
+    title: `${site.name} — Brutal Me Page`,
     description: site.description,
     type: "website",
-    locale: "en_US",
   },
-  twitter: {
-    card: "summary",
-    title: site.title,
-    description: site.description,
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -44,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="bg-bg text-fg antialiased">
+    <html lang="en" className={`${syne.variable} ${spaceMono.variable}`}>
+      <body>
         <JsReady />
         {children}
       </body>

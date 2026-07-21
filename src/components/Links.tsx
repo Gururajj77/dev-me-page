@@ -1,31 +1,39 @@
 import { linkItems } from "@/lib/content";
 import { SectionReveal } from "@/components/SectionReveal";
-import { TextLink } from "@/components/TextLink";
+
+const styles = ["btn-ink", "btn-hot", "btn", "btn-ice", "btn-ink"];
 
 export function Links() {
   return (
     <SectionReveal
       id="links"
       ariaLabelledBy="links-heading"
-      className="section-block border-t border-border py-14 sm:py-16"
+      className="section-gap"
     >
-      <p className="eyebrow-rule section-label mb-6">Links</p>
-      <h2 id="links-heading" className="sr-only">
-        Links
-      </h2>
+      <div className="mb-4 flex items-center gap-3">
+        <span className="stamp bg-ink text-paper">06</span>
+        <h2 id="links-heading" className="display text-[clamp(2rem,5vw,3rem)]">
+          Links
+        </h2>
+      </div>
 
-      <ul className="flex flex-wrap gap-x-8 gap-y-4">
-        {linkItems.map((item) => (
-          <li key={item.label}>
-            <TextLink
-              href={item.href}
-              className="text-[1.05rem] text-muted transition-colors hover:text-fg"
-            >
-              {item.label}
-            </TextLink>
-          </li>
-        ))}
-      </ul>
+      <div className="slab bg-sun p-5 md:p-6">
+        <ul className="flex flex-wrap gap-3">
+          {linkItems.map((item, i) => (
+            <li key={item.label}>
+              <a
+                href={item.href}
+                {...(item.href.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className={`btn ${styles[i % styles.length]}`}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </SectionReveal>
   );
 }

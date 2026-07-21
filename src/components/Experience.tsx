@@ -1,34 +1,44 @@
 import { experience } from "@/lib/content";
 import { SectionReveal } from "@/components/SectionReveal";
 
+const fills = ["bg-sun", "bg-white", "bg-ice"];
+
 export function Experience() {
   return (
     <SectionReveal
       id="experience"
       ariaLabelledBy="experience-heading"
-      className="section-block border-t border-border py-14 sm:py-16"
+      className="section-gap"
     >
-      <p className="eyebrow-rule section-label mb-6">Experience</p>
-      <h2
-        id="experience-heading"
-        className="text-[clamp(1.65rem,3.5vw,2.15rem)] font-medium tracking-[-0.03em] text-fg"
-      >
-        Where I&apos;ve built.
-      </h2>
+      <div className="mb-4 flex items-center gap-3">
+        <span className="stamp bg-ink text-paper">03</span>
+        <h2
+          id="experience-heading"
+          className="display text-[clamp(2rem,5vw,3rem)]"
+        >
+          Work stamps
+        </h2>
+      </div>
 
-      <ul className="mt-10 divide-y divide-border border-y border-border">
-        {experience.map((item) => (
-          <li key={`${item.company}-${item.period}`} className="py-8 sm:py-9">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
-              <h3 className="text-[1.2rem] font-medium tracking-[-0.02em] text-fg sm:text-[1.35rem]">
-                {item.company}
-              </h3>
-              <p className="shrink-0 font-mono text-[0.8125rem] tracking-wide text-faint tabular-nums">
-                {item.period}
-              </p>
-            </div>
-            <p className="mt-2 text-[0.975rem] text-muted">{item.role}</p>
-            <p className="mt-4 max-w-2xl text-[1.025rem] leading-[1.7] text-muted">
+      <ul className="space-y-5">
+        {experience.map((item, index) => (
+          <li
+            key={`${item.company}-${item.period}`}
+            className={`slab relative p-5 md:p-6 ${fills[index % fills.length]} ${
+              index % 2 === 0 ? "offset-1" : "offset-2"
+            }`}
+          >
+            <span className="stamp absolute -top-3 right-4 bg-ink text-paper md:-right-3">
+              {item.period}
+            </span>
+            <p className="text-xs font-bold tracking-widest uppercase opacity-60">
+              [{String(index + 1).padStart(2, "0")}]
+            </p>
+            <h3 className="display mt-2 text-[clamp(1.6rem,4vw,2.6rem)]">
+              {item.company}
+            </h3>
+            <p className="mt-2 text-sm font-bold md:text-base">{item.role}</p>
+            <p className="mt-4 border-t-4 border-ink pt-4 text-[0.95rem] leading-relaxed md:text-[1.02rem]">
               {item.summary}
             </p>
           </li>

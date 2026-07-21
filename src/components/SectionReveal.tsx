@@ -34,15 +34,16 @@ export function SectionReveal({
 
       gsap.fromTo(
         el,
-        { autoAlpha: 0, y: 28 },
+        { autoAlpha: 0, y: 40, rotate: -1 },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.9,
-          ease: "power2.out",
+          rotate: 0,
+          duration: 0.55,
+          ease: "back.out(1.5)",
           scrollTrigger: {
             trigger: el,
-            start: "top 88%",
+            start: "top 90%",
             toggleActions: "play none none none",
           },
         },

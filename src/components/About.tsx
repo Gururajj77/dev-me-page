@@ -6,18 +6,37 @@ export function About() {
     <SectionReveal
       id="about"
       ariaLabelledBy="about-heading"
-      className="section-block border-t border-border py-14 sm:py-16"
+      className="section-gap"
     >
-      <p className="eyebrow-rule section-label mb-6">About</p>
-      <h2
-        id="about-heading"
-        className="text-[clamp(1.65rem,3.5vw,2.15rem)] font-medium tracking-[-0.03em] text-fg"
-      >
-        Systems, platforms, and craft.
-      </h2>
-      <p className="mt-6 max-w-2xl text-[1.0625rem] leading-[1.75] text-muted sm:text-[1.125rem]">
-        {about.body}
-      </p>
+      <div className="mb-4 flex items-center gap-3">
+        <span className="stamp bg-ink text-paper">01</span>
+        <span className="text-xs font-bold tracking-[0.18em] uppercase">
+          About
+        </span>
+      </div>
+
+      <div className="relative">
+        <div
+          aria-hidden="true"
+          className="slab absolute inset-2 bg-hot opacity-90"
+        />
+        <div className="slab relative bg-white p-5 md:p-8">
+          <h2
+            id="about-heading"
+            className="display mb-5 text-[clamp(2.2rem,6vw,3.75rem)]"
+          >
+            I build the boring
+            <br />
+            infrastructure
+            <span className="bg-sun px-1">people love</span>
+            <br />
+            to forget.
+          </h2>
+          <p className="max-w-2xl text-[1.02rem] leading-relaxed md:text-[1.1rem]">
+            {about.body}
+          </p>
+        </div>
+      </div>
     </SectionReveal>
   );
 }
