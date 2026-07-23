@@ -1,27 +1,22 @@
-import { Contact } from "@/components/Contact";
-import { Experience } from "@/components/Experience";
-import { Footer } from "@/components/Footer";
-import { Hero } from "@/components/Hero";
-import { Marquee } from "@/components/Marquee";
+import { BentoHome } from "@/components/BentoHome";
 import { Nav } from "@/components/Nav";
-import { Skills } from "@/components/Skills";
-import { Work } from "@/components/Work";
-import { ctaTicker, stackTicker } from "@/lib/content";
+import { site } from "@/lib/content";
 
 export default function HomePage() {
   return (
     <>
       <Nav />
       <main>
-        <Hero />
-        <Marquee items={stackTicker} tone="yellow" direction="left" />
-        <Work />
-        <Experience />
-        <Skills />
-        <Marquee items={ctaTicker} tone="green" direction="right" />
-        <Contact />
+        <BentoHome />
       </main>
-      <Footer />
+      <footer className="border-t-2 border-border">
+        <div className="shell flex flex-wrap items-center justify-between gap-2 py-3">
+          <p className="font-mono text-[0.65rem] text-muted">
+            © {new Date().getFullYear()} {site.name}
+          </p>
+          <p className="font-mono text-[0.65rem] text-muted">{site.location}</p>
+        </div>
+      </footer>
     </>
   );
 }
