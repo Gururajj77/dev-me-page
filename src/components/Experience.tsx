@@ -1,39 +1,52 @@
 import { experience } from "@/lib/content";
-import { SectionReveal } from "@/components/SectionReveal";
+import { PopIn } from "@/components/PopIn";
+
+const bar = {
+  green: "bg-green",
+  blue: "bg-blue",
+  yellow: "bg-yellow",
+} as const;
 
 export function Experience() {
   return (
-    <SectionReveal
-      id="experience"
-      ariaLabelledBy="experience-heading"
-      className="section-block border-t border-border py-14 sm:py-16"
-    >
-      <p className="eyebrow-rule section-label mb-6">Experience</p>
-      <h2
-        id="experience-heading"
-        className="text-[clamp(1.65rem,3.5vw,2.15rem)] font-medium tracking-[-0.03em] text-fg"
-      >
-        Where I&apos;ve built.
-      </h2>
+    <section id="experience" className="shell py-10 md:py-14">
+      <p className="section-label mb-5 text-pink">02 / Experience</p>
 
-      <ul className="mt-10 divide-y divide-border border-y border-border">
-        {experience.map((item) => (
-          <li key={`${item.company}-${item.period}`} className="py-8 sm:py-9">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
-              <h3 className="text-[1.2rem] font-medium tracking-[-0.02em] text-fg sm:text-[1.35rem]">
-                {item.company}
-              </h3>
-              <p className="shrink-0 font-mono text-[0.8125rem] tracking-wide text-faint tabular-nums">
-                {item.period}
-              </p>
-            </div>
-            <p className="mt-2 text-[0.975rem] text-muted">{item.role}</p>
-            <p className="mt-4 max-w-2xl text-[1.025rem] leading-[1.7] text-muted">
-              {item.summary}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </SectionReveal>
+      <PopIn>
+        <ul data-pop className="tile tile-surface overflow-hidden">
+          {experience.map((item, index) => (
+            <li
+              key={`${item.company}-${item.period}`}
+              className={`grid gap-3 p-5 md:grid-cols-[11rem_1fr] md:gap-8 md:p-6 ${
+                index > 0 ? "border-t-2 border-border" : ""
+              }`}
+            >
+              <div className="flex gap-3 md:block">
+                <span
+                  className={`mt-1 block h-auto w-1 shrink-0 self-stretch md:hidden ${bar[item.accent]}`}
+                  aria-hidden
+                />
+                <p className="font-mono text-[0.7rem] text-muted uppercase md:pt-1">
+                  {item.period}
+                </p>
+              </div>
+              <div className="relative md:pl-4">
+                <span
+                  className={`absolute top-0 left-0 hidden h-full w-1 md:block ${bar[item.accent]}`}
+                  aria-hidden
+                />
+                <h3 className="display text-xl md:text-2xl">{item.role}</h3>
+                <p className="mt-1 font-mono text-xs font-bold tracking-wide text-muted uppercase">
+                  {item.company}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted md:text-[0.95rem]">
+                  {item.summary}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </PopIn>
+    </section>
   );
 }

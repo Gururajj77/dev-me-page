@@ -1,5 +1,6 @@
 export const site = {
   name: "Gururaj J",
+  brand: "gururaj.dev",
   title: "Gururaj J — Frontend Engineer",
   description:
     "Frontend engineer building developer platforms, design systems, and products people actually use.",
@@ -7,170 +8,186 @@ export const site = {
   phone: "+91 94836 93267",
   phoneHref: "tel:+919483693267",
   location: "Bengaluru, India",
+  timezone: "UTC +05:30 · IST",
   status: "Open to frontend platform roles",
+  years: "05",
+  yearsLabel: "Years in production frontend",
   links: {
     github: "https://github.com/Gururajj77",
     linkedin: "https://www.linkedin.com/in/jgururaj/",
     knotcms: "https://knotcms.com",
+    carbon: "https://carbondesignsystem.com",
     resume: "/resume.pdf",
     email: "mailto:jdotgururaj@gmail.com",
   },
 } as const;
 
 export const hero = {
-  greeting: "Hello, I'm Gururaj.",
-  role: "Frontend Engineer — developer platforms, design systems, and products people actually use.",
+  role: "Frontend Engineer — Developer Platforms",
+  bio: "I build the systems behind the interface — shared components, documentation platforms, and tooling that make other engineers faster. At IBM I work on Carbon Design System. Outside of that, I ship KnotCMS end to end.",
 } as const;
 
-export const about = {
-  body: "I care about the systems behind the interface — shared components, documentation platforms, and tooling that makes other engineers faster. At IBM I work on Carbon Design System, the UI infrastructure thousands of developers depend on. Outside of that, I build KnotCMS end to end: a Cloudflare-based platform that keeps Notion content and Framer CMS in sync without manual work. I enjoy owning hard problems from architecture to polish.",
-} as const;
+export const stackTicker = [
+  "React",
+  "TypeScript",
+  "Next.js",
+  "Web Components",
+  "Cloudflare Workers",
+  "Storybook",
+  "Design Systems",
+  "Lit",
+  "D1",
+  "OAuth",
+  "Monorepos",
+  "CI/CD",
+] as const;
 
-export type SkillIconId =
-  | "react"
-  | "nextjs"
-  | "angular"
-  | "typescript"
-  | "javascript"
-  | "html5"
-  | "css3"
-  | "cloudflare"
-  | "d1"
-  | "kv"
-  | "webhooks"
-  | "rest"
-  | "oauth"
-  | "githubactions"
-  | "designsystems"
-  | "lit"
-  | "storybook"
-  | "payload"
-  | "monorepos"
-  | "performance"
-  | "git"
-  | "github"
-  | "pnpm"
-  | "npm"
-  | "turborepo"
-  | "codecov"
-  | "vite";
+export const ctaTicker = [
+  "Open to interesting problems",
+  "Let's talk",
+  "Email me",
+  "Design systems",
+  "Developer platforms",
+] as const;
 
-export const skillGroups = [
+export const projects = [
   {
-    group: "Frontend",
-    items: [
-      { name: "React", icon: "react" },
-      { name: "Next.js", icon: "nextjs" },
-      { name: "Angular", icon: "angular" },
-      { name: "TypeScript", icon: "typescript" },
-      { name: "JavaScript", icon: "javascript" },
-      { name: "HTML5", icon: "html5" },
-      { name: "CSS3", icon: "css3" },
+    title: "KnotCMS",
+    role: "Founder & Engineer",
+    period: "Jun 2026 — Present",
+    href: "https://knotcms.com",
+    accent: "green" as const,
+    mark: "K",
+    description:
+      "Notion → Framer CMS sync as a product: event-driven Cloudflare architecture, OAuth, billing, webhooks, and a self-service dashboard.",
+    tags: [
+      "TypeScript",
+      "Cloudflare Workers",
+      "D1",
+      "KV",
+      "OAuth",
+      "Webhooks",
     ],
   },
   {
-    group: "Platform & Infrastructure",
-    items: [
-      { name: "Cloudflare Workers", icon: "cloudflare" },
-      { name: "Cloudflare D1", icon: "d1" },
-      { name: "Cloudflare KV", icon: "kv" },
-      { name: "Webhooks", icon: "webhooks" },
-      { name: "REST APIs", icon: "rest" },
-      { name: "OAuth", icon: "oauth" },
-      { name: "GitHub Actions", icon: "githubactions" },
-    ],
+    title: "Carbon Design System",
+    role: "Frontend Developer / IBM",
+    period: "Feb 2024 — Present",
+    href: "https://carbondesignsystem.com",
+    accent: "blue" as const,
+    mark: "C",
+    description:
+      "Shared UI platform and documentation infrastructure used across product teams — components, content systems, and upgrades adopted at scale.",
+    tags: ["React", "TypeScript", "Lit", "Storybook", "Monorepos", "CI/CD"],
+  },
+] as const;
+
+export const metrics = [
+  {
+    value: "0",
+    label: "Manual content updates",
+    accent: "yellow" as const,
   },
   {
-    group: "Developer Experience",
-    items: [
-      { name: "Design Systems", icon: "designsystems" },
-      { name: "Web Components (Lit)", icon: "lit" },
-      { name: "Storybook", icon: "storybook" },
-      { name: "Payload CMS", icon: "payload" },
-      { name: "Monorepos", icon: "monorepos" },
-      { name: "Performance Optimization", icon: "performance" },
-    ],
+    value: "5,000+",
+    label: "Developers served",
+    accent: "pink" as const,
   },
   {
-    group: "Tools",
-    items: [
-      { name: "Git", icon: "git" },
-      { name: "GitHub", icon: "github" },
-      { name: "pnpm", icon: "pnpm" },
-      { name: "npm", icon: "npm" },
-      { name: "TurboRepo", icon: "turborepo" },
-      { name: "Codecov", icon: "codecov" },
-      { name: "Vite", icon: "vite" },
-    ],
+    value: "40K",
+    label: "Weekly NPM consumers",
+    accent: "green" as const,
   },
-] as const satisfies ReadonlyArray<{
-  group: string;
-  items: ReadonlyArray<{ name: string; icon: SkillIconId }>;
-}>;
+  {
+    value: "85%",
+    label: "Test coverage · @carbon/react",
+    accent: "blue" as const,
+  },
+] as const;
 
 export const experience = [
-  {
-    company: "IBM India Pvt. Ltd.",
-    role: "Frontend Developer, Carbon Design System",
-    period: "Feb 2024 — Present",
-    summary:
-      "Shared UI components and documentation infrastructure for Carbon, supporting thousands of developers — with platform upgrades, content versioning, and release reliability for large NPM audiences.",
-  },
   {
     company: "KnotCMS",
     role: "Founder & Engineer",
     period: "Jun 2026 — Present",
+    accent: "green" as const,
     summary:
       "Built a SaaS platform that syncs Notion databases to Framer CMS. Owned architecture, Cloudflare Workers backend, dashboard, billing, and launch end to end.",
   },
   {
+    company: "IBM India Pvt. Ltd.",
+    role: "Frontend Developer",
+    period: "Feb 2024 — Present",
+    accent: "blue" as const,
+    summary:
+      "Shared UI components and documentation infrastructure for Carbon, supporting thousands of developers — platform upgrades, content versioning, and release reliability.",
+  },
+  {
     company: "Wipro Limited",
-    role: "Project Engineer — Cloud Migration & Modernization",
+    role: "Project Engineer",
     period: "Sep 2021 — Feb 2024",
+    accent: "yellow" as const,
     summary:
       "Led modernization of enterprise applications from WebForms to Angular for Wells Fargo, with reusable component libraries, testing, and CI/CD integration.",
   },
 ] as const;
 
-export const projects = [
+export const skillGroups = [
   {
-    title: "IBM Carbon Design System",
-    href: "https://carbondesignsystem.com",
-    description:
-      "Shared UI platform and documentation infrastructure used across product teams — components, content systems, and upgrades adopted at scale.",
+    group: "React & TypeScript",
+    accent: "yellow" as const,
+    items: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "JavaScript",
+      "Angular",
+      "HTML5",
+      "CSS3",
+    ],
   },
   {
-    title: "KnotCMS",
-    href: "https://knotcms.com",
-    description:
-      "Notion → Framer CMS sync as a product: event-driven Cloudflare architecture, OAuth, billing, webhooks, and a self-service dashboard.",
+    group: "Design & Web",
+    accent: "pink" as const,
+    items: [
+      "Design Systems",
+      "Web Components (Lit)",
+      "Storybook",
+      "Performance",
+      "Vite",
+    ],
+  },
+  {
+    group: "Platform & Infrastructure",
+    accent: "green" as const,
+    items: [
+      "Cloudflare Workers",
+      "Cloudflare D1",
+      "Cloudflare KV",
+      "REST APIs",
+      "OAuth",
+      "Webhooks",
+      "GitHub Actions",
+    ],
+  },
+  {
+    group: "Developer Experience",
+    accent: "blue" as const,
+    items: [
+      "Monorepos",
+      "TurboRepo",
+      "pnpm",
+      "npm",
+      "Git",
+      "Codecov",
+      "Payload CMS",
+    ],
   },
 ] as const;
 
-export const education = [
-  {
-    school: "PES Institute of Technology and Management",
-    detail: "Bachelor of Engineering",
-    period: "CGPA 7.73",
-  },
-] as const;
-
-export const linkItems = [
-  { label: "GitHub", href: site.links.github },
-  { label: "LinkedIn", href: site.links.linkedin },
-  { label: "KnotCMS", href: site.links.knotcms },
-  { label: "Resume", href: site.links.resume },
-  { label: "Email", href: site.links.email },
-] as const;
-
-export const footerLinks = linkItems;
-
-export const sectionNav = [
-  { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
+export const nav = [
+  { id: "work", label: "Work" },
   { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "education", label: "Education" },
-  { id: "links", label: "Links" },
+  { id: "skills", label: "Skills" },
   { id: "contact", label: "Contact" },
 ] as const;
