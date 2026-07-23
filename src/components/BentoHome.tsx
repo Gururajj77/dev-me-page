@@ -7,6 +7,8 @@ import {
   FiLinkedin,
   FiMail,
   FiMapPin,
+  FiMoon,
+  FiSun,
 } from "react-icons/fi";
 import {
   experience,
@@ -15,6 +17,7 @@ import {
   site,
   skillGroups,
 } from "@/lib/content";
+import { useTheme } from "@/components/ThemeProvider";
 import {
   gsap,
   prefersReducedMotion,
@@ -46,18 +49,32 @@ const lift = {
   pink: "tile-lift-pink",
 } as const;
 
-/** Compact skill list — one chip row across groups, not four full tiles. */
 const featuredSkills = skillGroups.flatMap((g) => g.items).slice(0, 14);
 
 export function BentoHome() {
   const rootRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
+  const { theme, toggle } = useTheme();
 
   useGSAP(
     () => {
       const root = rootRef.current;
       const name = nameRef.current;
-      if (!root || !name || prefersReducedMotion()) return;
+      if (!root || !name) return;
+
+      const tiles = gsap.utils.toArray<HTMLElement>(
+        root.querySelectorAll("[data-bento]"),
+      );
+      const meta = root.querySelectorAll<HTMLElement>("[data-meta]");
+      const chips = root.querySelectorAll<HTMLElement>("[data-chip]");
+
+      if (prefersReducedMotion()) {
+        gsap.set([name, ...tiles, ...meta, ...chips], {
+          clearProps: "all",
+          autoAlpha: 1,
+        });
+        return;
+      }
 
       const split = SplitText.create(name, {
         type: "chars",
@@ -65,33 +82,60 @@ export function BentoHome() {
         aria: "auto",
       });
 
-      gsap.fromTo(
+      gsap.set(split.chars, { autoAlpha: 0, yPercent: 110 });
+      gsap.set(tiles, { autoAlpha: 0, y: 28, scale: 0.94 });
+      gsap.set(meta, { autoAlpha: 0, y: -8 });
+      gsap.set(chips, { autoAlpha: 0, y: 8 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      tl.to(meta, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.35,
+        stagger: 0.05,
+      });
+
+      tl.to(
         split.chars,
-        { autoAlpha: 0, y: 16 },
         {
           autoAlpha: 1,
-          y: 0,
-          duration: 0.32,
-          stagger: 0.028,
-          ease: "power2.out",
-          clearProps: "transform",
+          yPercent: 0,
+          duration: 0.4,
+          stagger: { each: 0.028, from: "start" },
+          ease: "power3.out",
         },
+        0.08,
       );
 
-      const tiles = root.querySelectorAll<HTMLElement>("[data-bento]");
-      gsap.fromTo(
+      // Bento assembles left → right, punchy mechanical pop
+      tl.to(
         tiles,
-        { autoAlpha: 0, y: 14, scale: 0.98 },
         {
           autoAlpha: 1,
           y: 0,
           scale: 1,
-          duration: 0.32,
-          stagger: 0.045,
-          ease: "power2.out",
-          delay: 0.12,
+          duration: 0.38,
+          stagger: 0.055,
+          ease: "back.out(1.4)",
           clearProps: "transform",
         },
+        0.22,
+      );
+
+      tl.to(
+        chips,
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.28,
+          stagger: 0.018,
+          ease: "power2.out",
+          clearProps: "transform",
+        },
+        "-=0.2",
       );
 
       return () => split.revert();
@@ -101,11 +145,33 @@ export function BentoHome() {
 
   return (
     <section ref={rootRef} id="top" className="shell py-3 md:py-4">
+      {/* Slim chrome — not a nav, just brand + theme */}
+      <div className="mb-3 flex items-center justify-between gap-3 md:mb-4">
+        <p
+          data-meta
+          className="font-mono text-xs font-bold tracking-[0.14em] text-fg uppercase"
+        >
+          {site.brand}
+        </p>
+        <button
+          data-meta
+          type="button"
+          className="icon-btn"
+          onClick={toggle}
+          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+        >
+          {theme === "light" ? (
+            <FiMoon className="size-4" />
+          ) : (
+            <FiSun className="size-4" />
+          )}
+        </button>
+      </div>
+
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-12 md:auto-rows-min">
-        {/* —— Identity —— */}
         <div
           data-bento
-          className="tile tile-surface tile-lift col-span-2 flex flex-col gap-3 p-4 sm:p-5 md:col-span-6 md:row-span-2 md:gap-4 md:p-6 lg:col-span-6"
+          className="tile tile-surface tile-lift col-span-2 flex flex-col gap-3 overflow-hidden p-4 sm:p-5 md:col-span-6 md:row-span-2 md:gap-4 md:p-6 lg:col-span-6"
         >
           <p className="flex items-center gap-2 font-mono text-[0.65rem] font-bold tracking-[0.08em] text-green uppercase">
             <span className="status-dot" aria-hidden />
@@ -113,7 +179,7 @@ export function BentoHome() {
           </p>
           <h1
             ref={nameRef}
-            className="display hard-shadow-pink whitespace-nowrap text-[clamp(2.2rem,5.5vw,5.5rem)] text-fg"
+            className="display hard-shadow-pink overflow-hidden whitespace-nowrap text-[clamp(2.2rem,5.5vw,5.5rem)] text-fg"
           >
             Gururaj J
           </h1>
@@ -125,7 +191,6 @@ export function BentoHome() {
           </p>
         </div>
 
-        {/* —— Years —— */}
         <div
           data-bento
           className="tile tile-lift tile-lift-white flex flex-col justify-between bg-yellow p-3 text-[var(--on-accent)] sm:p-4 md:col-span-3 lg:col-span-3"
@@ -138,7 +203,6 @@ export function BentoHome() {
           </p>
         </div>
 
-        {/* —— Location —— */}
         <div
           data-bento
           className="tile tile-surface tile-lift tile-lift-white flex flex-col justify-between p-3 sm:p-4 md:col-span-3 lg:col-span-3"
@@ -154,7 +218,6 @@ export function BentoHome() {
           </div>
         </div>
 
-        {/* —— Email —— */}
         <a
           data-bento
           href={site.links.email}
@@ -172,7 +235,6 @@ export function BentoHome() {
           <FiArrowUpRight className="size-3.5 shrink-0" aria-hidden />
         </a>
 
-        {/* —— GitHub —— */}
         <a
           data-bento
           href={site.links.github}
@@ -187,12 +249,10 @@ export function BentoHome() {
           <FiArrowUpRight className="size-3.5" aria-hidden />
         </a>
 
-        {/* —— Work: KnotCMS —— */}
         {projects.map((project) => (
           <a
             key={project.title}
             data-bento
-            id={project.accent === "green" ? "work" : undefined}
             href={project.href}
             target="_blank"
             rel="noopener noreferrer"
@@ -223,7 +283,11 @@ export function BentoHome() {
             </p>
             <ul className="mt-3 flex flex-wrap gap-1.5">
               {project.tags.slice(0, 4).map((tag) => (
-                <li key={tag} className="chip !px-1.5 !py-0.5 text-[0.58rem]">
+                <li
+                  key={tag}
+                  data-chip
+                  className="chip px-1.5 py-0.5 text-[0.58rem]"
+                >
                   {tag}
                 </li>
               ))}
@@ -231,14 +295,12 @@ export function BentoHome() {
           </a>
         ))}
 
-        {/* —— Experience —— */}
         <div
           data-bento
-          id="experience"
           className="tile tile-surface tile-lift tile-lift-white col-span-2 p-4 sm:p-5 md:col-span-5 lg:col-span-5"
         >
           <p className="section-label mb-3 text-pink">Experience</p>
-          <ul className="space-y-0">
+          <ul>
             {experience.map((item, i) => (
               <li
                 key={`${item.company}-${item.period}`}
@@ -263,23 +325,20 @@ export function BentoHome() {
           </ul>
         </div>
 
-        {/* —— Skills —— */}
         <div
           data-bento
-          id="skills"
           className="tile tile-surface tile-lift tile-lift-white col-span-2 p-4 sm:p-5 md:col-span-7 lg:col-span-7"
         >
           <p className="section-label mb-3 text-yellow">Toolkit</p>
           <ul className="flex flex-wrap gap-1.5">
             {featuredSkills.map((skill) => (
-              <li key={skill} className="chip text-fg">
+              <li key={skill} data-chip className="chip text-fg">
                 {skill}
               </li>
             ))}
           </ul>
         </div>
 
-        {/* —— CTAs row —— */}
         <a
           data-bento
           href={site.links.resume}
@@ -305,7 +364,6 @@ export function BentoHome() {
 
         <a
           data-bento
-          id="contact"
           href={site.links.email}
           className="tile tile-lift tile-lift-white col-span-2 flex items-center justify-between gap-3 bg-green p-3 text-[var(--on-accent)] sm:p-4 md:col-span-6"
         >

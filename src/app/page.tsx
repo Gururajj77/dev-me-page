@@ -1,11 +1,9 @@
 import { BentoHome } from "@/components/BentoHome";
-import { Nav } from "@/components/Nav";
 import { site } from "@/lib/content";
 
 export default function HomePage() {
   return (
     <>
-      <Nav />
       <main>
         <BentoHome />
       </main>
