@@ -107,14 +107,6 @@ export const metrics = [
 
 export const experience = [
   {
-    company: "KnotCMS",
-    role: "Founder & Engineer",
-    period: "Jun 2026 — Present",
-    accent: "green" as const,
-    summary:
-      "Built a SaaS platform that syncs Notion databases to Framer CMS. Owned architecture, Cloudflare Workers backend, dashboard, billing, and launch end to end.",
-  },
-  {
     company: "IBM India Pvt. Ltd.",
     role: "Frontend Developer",
     period: "Feb 2024 — Present",

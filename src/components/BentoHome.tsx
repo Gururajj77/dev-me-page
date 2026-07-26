@@ -297,7 +297,7 @@ export function BentoHome() {
 
         <div
           data-bento
-          className="tile tile-surface tile-lift tile-lift-white col-span-2 p-4 sm:p-5 md:col-span-5 lg:col-span-5"
+          className="tile tile-surface tile-lift tile-lift-white col-span-2 self-start p-4 sm:p-5 md:col-span-5 lg:col-span-5"
         >
           <p className="section-label mb-3 text-pink">Experience</p>
           <ul>
@@ -327,7 +327,7 @@ export function BentoHome() {
 
         <div
           data-bento
-          className="tile tile-surface tile-lift tile-lift-white col-span-2 p-4 sm:p-5 md:col-span-7 lg:col-span-7"
+          className="tile tile-surface tile-lift tile-lift-white col-span-2 self-start p-4 sm:p-5 md:col-span-7 lg:col-span-7"
         >
           <p className="section-label mb-3 text-yellow">Toolkit</p>
           <ul className="flex flex-wrap gap-1.5">
