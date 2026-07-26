@@ -22,10 +22,10 @@
   --border: #0a0a0b;
   --fg: #0a0a0b;
   --muted: #55555e;
-  --green: #00a866;
-  --yellow: #dfac00;
+  --green: #00c27a;
+  --yellow: #ffc300;
   --pink: #ff5ca8;
-  --blue: #4d9fff;
+  --blue: #3d8bff;
   --on-accent: #0a0a0b;
 }
 
@@ -178,13 +178,27 @@
     background: var(--surface);
   }
 
+  [data-theme="light"] .tile {
+    box-shadow: 3px 3px 0 var(--border);
+  }
+
   .tile-lift:hover {
     transform: translate(-3px, -3px);
     box-shadow: 3px 3px 0 var(--border);
   }
 
+  [data-theme="light"] .tile-lift:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--border);
+  }
+
   .tile-lift:active {
     transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--border);
+  }
+
+  [data-theme="light"] .tile-lift:active {
+    transform: translate(3px, 3px);
     box-shadow: 0 0 0 var(--border);
   }
 
@@ -206,6 +220,38 @@
 
   .tile-lift-white:hover {
     box-shadow: 3px 3px 0 var(--border);
+  }
+
+  [data-theme="light"] .tile-lift-green {
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  [data-theme="light"] .tile-lift-green:hover {
+    box-shadow: 6px 6px 0 var(--green);
+  }
+
+  [data-theme="light"] .tile-lift-blue {
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  [data-theme="light"] .tile-lift-blue:hover {
+    box-shadow: 6px 6px 0 var(--blue);
+  }
+
+  [data-theme="light"] .tile-lift-yellow {
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  [data-theme="light"] .tile-lift-yellow:hover {
+    box-shadow: 6px 6px 0 var(--yellow);
+  }
+
+  [data-theme="light"] .tile-lift-pink {
+    box-shadow: 3px 3px 0 var(--border);
+  }
+  [data-theme="light"] .tile-lift-pink:hover {
+    box-shadow: 6px 6px 0 var(--pink);
+  }
+
+  [data-theme="light"] .tile-lift-white:hover {
+    box-shadow: 6px 6px 0 var(--border);
   }
 
   .btn-brutal {
