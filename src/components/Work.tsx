@@ -1,98 +1,98 @@
-import { FiArrowUpRight } from "react-icons/fi";
-import { metrics, projects } from "@/lib/content";
+"use client";
+
+import { FiArrowRight } from "react-icons/fi";
+import { caseStudies } from "@/lib/content";
+import { useMode } from "@/components/ModeProvider";
 import { PopIn } from "@/components/PopIn";
 
-const accentText = {
-  green: "text-green",
+const titleAccent = {
   blue: "text-blue",
-  yellow: "text-yellow",
-  pink: "text-pink",
+  pink: "underline decoration-pink decoration-4 underline-offset-6",
 } as const;
 
-const accentBg = {
-  green: "bg-green",
-  blue: "bg-blue",
-  yellow: "bg-yellow",
-  pink: "bg-pink",
+const bannerAccent = {
+  blue: "case-banner-blue",
+  pink: "case-banner-pink",
 } as const;
 
-const lift = {
-  green: "tile-lift-green",
+const liftAccent = {
   blue: "tile-lift-blue",
-  yellow: "tile-lift-yellow",
   pink: "tile-lift-pink",
 } as const;
 
 export function Work() {
+  const { mode } = useMode();
+
   return (
-    <section id="work" className="shell py-10 md:py-14">
-      <p className="section-label mb-5 text-green">01 / Selected work</p>
+    <section id="work" className="flex flex-col gap-5">
+      <div className="flex items-center gap-4">
+        <p className="font-mono text-[0.7rem] tracking-[0.16em] text-muted uppercase">
+          Selected work — two cases, in depth
+        </p>
+        <div className="h-0.5 flex-1 bg-border" />
+      </div>
 
-      <PopIn className="grid gap-3 md:grid-cols-2" stagger={0.08}>
-        {projects.map((project) => (
-          <a
-            key={project.title}
-            data-pop
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`tile tile-surface tile-lift ${lift[project.accent]} block p-5 md:p-6`}
-          >
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <h3
-                  className={`display text-[clamp(1.5rem,4vw,2.1rem)] ${accentText[project.accent]}`}
-                >
-                  {project.title}
-                </h3>
-                <p className="mt-2 font-mono text-[0.68rem] text-muted uppercase">
-                  {project.role} · {project.period}
-                </p>
-              </div>
-              <span
-                className={`grid size-9 shrink-0 place-items-center ${accentBg[project.accent]} text-[var(--on-accent)]`}
-                aria-hidden
-              >
-                <span className="font-mono text-xs font-bold">{project.mark}</span>
-              </span>
-            </div>
-            <p className="text-sm leading-relaxed text-muted md:text-[0.95rem]">
-              {project.description}
-            </p>
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <li key={tag} className="chip">
-                  {tag}
-                </li>
-              ))}
-            </ul>
-            <p
-              className={`mt-5 inline-flex items-center gap-1 font-mono text-[0.7rem] font-bold uppercase ${accentText[project.accent]}`}
+      <PopIn className="grid gap-4 md:grid-cols-2" stagger={0.08}>
+        {caseStudies.map((study) => {
+          const points =
+            mode === "recruiter" ? study.recruiterPoints : study.engineerPoints;
+
+          return (
+            <a
+              key={study.id}
+              data-pop
+              href={study.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`tile tile-surface tile-lift ${liftAccent[study.accent]} flex flex-col`}
             >
-              Open project <FiArrowUpRight className="size-3.5" />
-            </p>
-          </a>
-        ))}
-      </PopIn>
+              <div className={`case-banner ${bannerAccent[study.accent]}`}>
+                <span className="border border-border bg-surface px-2 py-1 font-mono text-[0.62rem] tracking-wide uppercase">
+                  {study.dropLabel}
+                </span>
+              </div>
 
-      <PopIn
-        className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4"
-        stagger={0.06}
-      >
-        {metrics.map((metric) => (
-          <div
-            key={metric.label}
-            data-pop
-            className={`tile tile-lift tile-lift-white p-4 text-[var(--on-accent)] ${accentBg[metric.accent]}`}
-          >
-            <p className="display text-[clamp(1.8rem,5vw,2.6rem)] leading-none">
-              {metric.value}
-            </p>
-            <p className="mt-3 font-mono text-[0.62rem] font-bold tracking-wide uppercase">
-              {metric.label}
-            </p>
-          </div>
-        ))}
+              <div className="flex flex-1 flex-col gap-3.5 p-6 sm:p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <h3
+                      className={`display text-[clamp(1.4rem,3vw,1.8rem)] ${titleAccent[study.accent]}`}
+                    >
+                      {study.title}
+                    </h3>
+                    <p className="font-mono text-[0.68rem] text-muted">
+                      {study.meta}
+                    </p>
+                  </div>
+                  <FiArrowRight
+                    className="mt-1 size-5 shrink-0"
+                    aria-hidden
+                  />
+                </div>
+
+                <p className="text-[1.02rem] leading-relaxed">{study.summary}</p>
+
+                <div className="flex flex-col gap-2 border-t border-line pt-4 text-[0.92rem] leading-relaxed">
+                  {points.map((point) => (
+                    <div key={point.label}>
+                      <strong className="font-bold">{point.label}:</strong>{" "}
+                      {point.text}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
+                  {study.tags.map((tag) => (
+                    <span key={tag} className="chip-soft">
+                      {tag}
+                    </span>
+                  ))}
+                  <span className="chip-strong ml-auto">Read the case →</span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
       </PopIn>
     </section>
   );

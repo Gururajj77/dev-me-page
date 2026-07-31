@@ -1,51 +1,78 @@
-import { FiArrowUpRight, FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
-import { site } from "@/lib/content";
+"use client";
+
+import { FiArrowRight, FiGithub, FiLinkedin } from "react-icons/fi";
+import { contact, site } from "@/lib/content";
 import { PopIn } from "@/components/PopIn";
 
 export function Contact() {
   return (
-    <section id="contact" className="shell py-10 md:py-14">
-      <p className="section-label mb-5 text-blue">04 / Contact</p>
-
-      <PopIn>
-        <div data-pop className="tile tile-surface p-5 md:p-8 lg:p-10">
-          <h2 className="display hard-shadow-blue max-w-3xl text-[clamp(2rem,7vw,4.2rem)]">
-            Let&apos;s build something that lasts.
+    <PopIn>
+      <div
+        data-pop
+        id="contact"
+        className="tile bg-green grid gap-8 p-8 text-[var(--on-accent)] sm:p-10 md:grid-cols-[1.1fr_1fr]"
+      >
+        <div className="flex flex-col gap-5">
+          <h2 className="display text-[clamp(2rem,5.5vw,3rem)] leading-[0.98]">
+            {contact.headingLines[0]}
+            <br />
+            {contact.headingLines[1]}
           </h2>
-          <p className="mt-5 max-w-xl text-sm text-muted md:text-base">
-            Open to frontend platform roles, design systems work, and interesting
-            product problems. Say hello.
-          </p>
+          <div className="flex flex-col gap-3.5 text-[1.02rem] leading-relaxed">
+            {contact.steps.map((step) => (
+              <div key={step.n} className="flex gap-3">
+                <span className="pt-0.5 font-mono text-[0.72rem] font-bold">
+                  {step.n}
+                </span>
+                <div>
+                  <strong className="font-bold">{step.label}</strong>{" "}
+                  {step.text}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a href={site.links.email} className="btn-brutal btn-green">
-              <FiMail className="size-4" aria-hidden />
-              Email me
-              <FiArrowUpRight className="size-3.5" aria-hidden />
-            </a>
+        <div className="flex flex-col justify-center gap-3">
+          <a
+            href={site.links.email}
+            className="flex items-center justify-between gap-4 border-2 border-[#14120f] bg-[#fffdf8] px-6 py-5 text-[#14120f] shadow-[5px_5px_0_#14120f] transition-transform hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[2px_2px_0_#14120f]"
+          >
+            <span className="flex flex-col gap-1">
+              <span className="font-mono text-[0.62rem] tracking-[0.14em] uppercase opacity-60">
+                {contact.emailLabel}
+              </span>
+              <span className="text-[1.15rem] font-bold tracking-tight">
+                jdotgururaj@gmail.com
+              </span>
+            </span>
+            <FiArrowRight className="size-5 shrink-0" aria-hidden />
+          </a>
+
+          <div className="grid grid-cols-2 gap-3">
             <a
               href={site.links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-brutal btn-yellow"
+              className="flex items-center justify-between gap-3 border-2 border-[#14120f] px-4 py-3.5 text-[0.95rem] font-bold text-[#14120f] transition-colors hover:bg-[#14120f] hover:text-green"
             >
-              <FiGithub className="size-4" aria-hidden />
-              GitHub
-              <FiArrowUpRight className="size-3.5" aria-hidden />
+              GitHub <FiGithub className="size-4" aria-hidden />
             </a>
             <a
               href={site.links.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-brutal btn-blue"
+              className="flex items-center justify-between gap-3 border-2 border-[#14120f] px-4 py-3.5 text-[0.95rem] font-bold text-[#14120f] transition-colors hover:bg-[#14120f] hover:text-green"
             >
-              <FiLinkedin className="size-4" aria-hidden />
-              LinkedIn
-              <FiArrowUpRight className="size-3.5" aria-hidden />
+              LinkedIn <FiLinkedin className="size-4" aria-hidden />
             </a>
           </div>
+
+          <p className="pt-1 font-mono text-[0.68rem] leading-relaxed">
+            {contact.notLookingFor}
+          </p>
         </div>
-      </PopIn>
-    </section>
+      </div>
+    </PopIn>
   );
 }

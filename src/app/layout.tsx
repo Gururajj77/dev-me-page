@@ -1,22 +1,20 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { IBM_Plex_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { site } from "@/lib/content";
 import "./globals.css";
 
-const basement = localFont({
-  src: "./fonts/BasementGrotesque-Black.woff2",
-  weight: "900",
-  style: "normal",
-  variable: "--font-basement",
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "800"],
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
@@ -41,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${basement.variable} ${plexMono.variable}`}
+      className={`${archivo.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
       <head>
