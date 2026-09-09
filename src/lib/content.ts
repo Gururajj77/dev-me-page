@@ -159,6 +159,8 @@ export type ExperienceRecord = {
   tags: readonly string[];
   /** Evidence. Rendered as small bordered blocks. */
   metrics: readonly string[];
+  /** Roles that carry the portfolio story get the larger title treatment. */
+  emphasis?: boolean;
 };
 
 export const experience: readonly ExperienceRecord[] = [
@@ -168,16 +170,29 @@ export const experience: readonly ExperienceRecord[] = [
     role: "Founder & engineer",
     org: "KnotCMS",
     badge: "concurrent",
-    tags: ["Solo", "Cloudflare Workers", "Paying customers"],
-    metrics: ["Solo shipped", "Production", "Billing + webhooks"],
+    tags: ["Onboarding", "Dashboard", "Billing", "Support"],
+    metrics: ["Solo", "Production", "Paying customers", "Cloudflare"],
+    emphasis: true,
   },
   {
     period: "Feb 2024",
     periodEnd: "present",
     role: "Frontend developer",
     org: "IBM India · Carbon Design System",
-    tags: ["Shared components", "Documentation platform", "Migrations"],
-    metrics: ["5,000+ developers", "129K weekly consumers", "4 components owned"],
+    tags: [
+      "Components",
+      "Documentation",
+      "Navigation",
+      "Migrations",
+      "CI reliability",
+    ],
+    metrics: [
+      "5,000+ developers",
+      "129K weekly consumers",
+      "3,400+ implementations",
+      "4 components owned",
+    ],
+    emphasis: true,
   },
   {
     period: "Sep 2021",
@@ -211,7 +226,7 @@ export const toolkit = {
     },
     {
       label: "Product",
-      items: ["Next.js", "PayloadCMS", "Angular", "MongoDB"],
+      items: ["Next.js", "PayloadCMS", "Angular", "REST APIs", "MongoDB"],
     },
     {
       label: "Platform",

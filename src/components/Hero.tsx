@@ -97,12 +97,12 @@ export function Hero() {
       ref={rootRef}
       id="top"
       aria-labelledby="hero-name"
-      className="grid gap-4 lg:grid-cols-[2fr_1fr] lg:items-stretch"
+      className="grid gap-5 lg:grid-cols-[2fr_1fr] lg:items-stretch"
     >
       {/* ---------- Identity ---------- */}
       <div
         data-hero-tile
-        className="tile tile-surface flex flex-col gap-6 p-5 sm:p-8 lg:p-10"
+        className="tile tile-surface flex flex-col gap-8 p-6 sm:p-9 lg:p-12"
       >
         <p
           data-hero-meta
@@ -112,35 +112,37 @@ export function Hero() {
           {hero.eyebrow}
         </p>
 
-        <h1
-          id="hero-name"
-          ref={nameRef}
-          className="display hard-shadow-pink text-[clamp(2.5rem,12vw,5rem)] text-fg lg:text-[clamp(4rem,8vw,6rem)]"
-        >
-          Gururaj J
-        </h1>
+        <div className="flex flex-col gap-7">
+          <h1
+            id="hero-name"
+            ref={nameRef}
+            className="display hard-shadow-pink text-[clamp(2.5rem,12vw,5rem)] text-fg lg:text-[clamp(4rem,8vw,6rem)]"
+          >
+            Gururaj J
+          </h1>
 
-        <p className="max-w-[24ch] text-[clamp(1.35rem,2.4vw,2.25rem)] leading-[1.05] font-bold tracking-tight text-balance">
-          {hero.tagline}
-        </p>
+          <p className="max-w-[22ch] text-[clamp(1.75rem,2.9vw,2.6rem)] leading-[1.02] font-bold tracking-tight text-balance">
+            {hero.tagline}
+          </p>
+        </div>
 
-        <p className="max-w-[64ch] text-[0.95rem] leading-relaxed text-muted text-pretty md:text-base">
+        <p className="max-w-[62ch] text-[1rem] leading-[1.7] text-muted text-pretty md:text-[1.05rem]">
           {hero.bio}
         </p>
 
-        {/* Technical ownership strip */}
+        {/* Technical ownership strip: proof beneath the positioning */}
         <dl className="grid border-y border-line sm:grid-cols-3">
           {heroOwnership.map((item, i) => (
             <div
               key={item.label}
-              className={`flex flex-col gap-1 py-3.5 ${
+              className={`flex flex-col gap-1.5 py-4 ${
                 i > 0
-                  ? "border-t border-line sm:border-t-0 sm:border-l sm:pl-5"
+                  ? "border-t border-line sm:border-t-0 sm:border-l sm:pl-6"
                   : ""
-              } ${i < heroOwnership.length - 1 ? "sm:pr-5" : ""}`}
+              } ${i < heroOwnership.length - 1 ? "sm:pr-6" : ""}`}
             >
               <dt className="meta-label">{item.label}</dt>
-              <dd className="text-[0.9rem] leading-snug font-semibold tracking-tight">
+              <dd className="text-[0.95rem] leading-snug font-medium">
                 {item.value}
               </dd>
             </div>
@@ -148,9 +150,9 @@ export function Hero() {
         </dl>
 
         <div className="flex items-start gap-3.5">
-          <span className="mt-1.5 size-2.5 shrink-0 bg-green" aria-hidden />
+          <span className="mt-2 size-2.5 shrink-0 bg-green" aria-hidden />
           <div className="flex flex-col gap-1.5">
-            <p className="text-[1.05rem] leading-snug font-semibold">
+            <p className="text-[1.1rem] leading-snug font-semibold">
               {hero.availability}
             </p>
             <p className="font-mono text-[0.68rem] leading-relaxed text-muted">
@@ -159,7 +161,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="mt-auto flex flex-wrap gap-3.5 pt-1">
+        <div className="mt-auto flex flex-wrap gap-4 pt-1">
           <a href="#contact" className="btn-brutal btn-green">
             {hero.ctaPrimary}
             <FiArrowRight className="size-4" aria-hidden />
@@ -172,13 +174,13 @@ export function Hero() {
       </div>
 
       {/* ---------- Production footprint + status ---------- */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         <section
           data-hero-tile
           aria-labelledby="footprint-label"
           className="tile tile-surface flex flex-1 flex-col"
         >
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-line px-5 py-3.5 sm:px-6">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-line px-6 py-4">
             <h2 id="footprint-label" className="meta-label text-fg">
               {heroStat.panelLabel}
             </h2>
@@ -188,11 +190,12 @@ export function Hero() {
           </div>
 
           <div className="grid flex-1 grid-cols-2 lg:grid-cols-1">
-            <div className="col-span-2 flex flex-col justify-center gap-2 border-b border-line px-5 py-5 sm:px-6 lg:col-span-1">
-              <p className="display text-[clamp(3rem,4.5vw,4.5rem)] leading-none text-pink">
+            {/* Primary: the number dominates, the description reads as a sentence */}
+            <div className="col-span-2 flex flex-col justify-center gap-3 border-b border-line px-6 py-7 lg:col-span-1">
+              <p className="display text-[clamp(3.5rem,5.2vw,4.75rem)] leading-[0.9] text-pink">
                 {heroStat.value}
               </p>
-              <p className="max-w-[28ch] font-mono text-[0.64rem] leading-relaxed font-bold tracking-[0.1em] text-fg uppercase">
+              <p className="max-w-[22ch] text-[1rem] leading-snug font-semibold">
                 {heroStat.label}
               </p>
             </div>
@@ -200,12 +203,12 @@ export function Hero() {
             {heroStat.secondary.map((stat, i) => (
               <div
                 key={stat.label}
-                className={`flex flex-col gap-1.5 px-5 py-4 sm:px-6 lg:flex-row lg:items-center lg:gap-4 ${metricBorders(
+                className={`flex flex-col gap-1.5 px-6 py-4 lg:flex-row lg:items-center lg:gap-5 ${metricBorders(
                   i,
                   metricCount,
                 )}`}
               >
-                <p className="display text-[1.6rem] leading-none tabular-nums lg:w-[6rem] lg:shrink-0">
+                <p className="display text-[1.9rem] leading-none tabular-nums lg:w-[6.5rem] lg:shrink-0">
                   {stat.value}
                 </p>
                 <p className="font-mono text-[0.6rem] leading-relaxed tracking-[0.08em] text-muted uppercase">
@@ -215,7 +218,7 @@ export function Hero() {
             ))}
           </div>
 
-          <p className="mt-auto border-t border-line px-5 py-3 font-mono text-[0.6rem] tracking-[0.06em] text-muted uppercase sm:px-6">
+          <p className="mt-auto border-t border-line px-6 py-3 font-mono text-[0.58rem] tracking-[0.06em] text-muted uppercase">
             {heroStat.meta}
           </p>
         </section>
@@ -225,7 +228,7 @@ export function Hero() {
           aria-labelledby="status-label"
           className="border border-line"
         >
-          <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3 sm:px-6">
+          <div className="flex items-center justify-between gap-3 border-b border-line px-6 py-3.5">
             <h2 id="status-label" className="meta-label">
               {shipping.panelLabel}
             </h2>
@@ -233,19 +236,24 @@ export function Hero() {
               status record
             </p>
           </div>
-          <dl className="grid grid-cols-[6.5rem_1fr] gap-x-4 gap-y-2.5 px-5 py-4 font-mono text-[0.7rem] leading-snug sm:px-6">
-            <dt className="meta-label pt-px">Product</dt>
-            <dd>
-              {shipping.product}{" "}
-              <span className="text-muted">· {shipping.productDetail}</span>
-            </dd>
 
-            <dt className="meta-label pt-px">Status</dt>
-            <dd className="flex items-center gap-1.5 font-bold text-green uppercase">
+          {/* Title → product → live state, then supporting metadata */}
+          <div className="flex items-start justify-between gap-4 px-6 pt-5 pb-4">
+            <div className="flex flex-col gap-0.5">
+              <p className="text-[1.15rem] leading-tight font-bold tracking-tight">
+                {shipping.product}
+              </p>
+              <p className="text-[0.92rem] leading-snug text-muted">
+                {shipping.productDetail}
+              </p>
+            </div>
+            <p className="flex shrink-0 items-center gap-1.5 pt-1 font-mono text-[0.66rem] font-bold tracking-[0.14em] text-green uppercase">
               <span className="live-dot size-1.5 bg-green" aria-hidden />
               {shipping.status}
-            </dd>
+            </p>
+          </div>
 
+          <dl className="grid grid-cols-[6.5rem_1fr] gap-x-4 gap-y-2 border-t border-line px-6 py-4 font-mono text-[0.68rem] leading-snug">
             <dt className="meta-label pt-px">Last shipped</dt>
             <dd>{shipping.lastShipped}</dd>
 

@@ -15,7 +15,7 @@ export default function HomePage() {
       >
         Skip to the work
       </a>
-      <main className="shell flex flex-col gap-10 py-5 md:gap-14 md:py-7">
+      <main className="shell flex flex-col gap-14 py-6 md:gap-24 md:py-8">
         <TopBar />
         <Hero />
         <Work />

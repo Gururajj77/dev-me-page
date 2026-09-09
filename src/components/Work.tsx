@@ -16,21 +16,22 @@ export function Work() {
     <section
       id="work"
       aria-labelledby="work-head"
-      className="flex scroll-mt-6 flex-col gap-5"
+      className="flex scroll-mt-6 flex-col gap-7"
     >
       <SectionHead
         id="work-head"
         index="01"
-        label="Selected work — in depth"
-        meta="System inspection"
+        kicker="System inspection"
+        title="Selected work"
+        titleMuted="— in depth"
       />
 
-      <PopIn className="flex flex-col gap-4" stagger={0.08}>
+      <PopIn className="flex flex-col gap-5" stagger={0.08}>
         {caseStudies.map((study, index) => {
           const Diagram = diagrams[study.id];
           const titleId = `${study.id}-title`;
           const titleClass =
-            "underline decoration-pink decoration-4 underline-offset-6 hover:decoration-fg";
+            "underline decoration-pink decoration-4 underline-offset-8 hover:decoration-fg";
 
           return (
             <article
@@ -43,7 +44,7 @@ export function Work() {
               <div
                 className={`grid ${Diagram ? "lg:grid-cols-[45fr_55fr]" : ""}`}
               >
-                <div className="flex flex-col gap-5 p-5 sm:p-7 lg:border-r-2 lg:border-border">
+                <div className="flex flex-col gap-6 p-6 sm:p-8 lg:border-r-2 lg:border-border lg:p-9">
                   <div className="flex items-center justify-between gap-3">
                     <p className="meta-label">
                       System · {String(index + 1).padStart(2, "0")}
@@ -59,10 +60,10 @@ export function Work() {
                     </a>
                   </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-3">
                     <h3
                       id={titleId}
-                      className="display text-[clamp(2rem,3.2vw,2.6rem)]"
+                      className="display text-[clamp(2.25rem,3.4vw,2.75rem)]"
                     >
                       {study.caseHref ? (
                         <Link href={study.caseHref} className={titleClass}>
@@ -79,12 +80,12 @@ export function Work() {
                         </a>
                       )}
                     </h3>
-                    <p className="font-mono text-[0.68rem] text-muted">
+                    <p className="font-mono text-[0.66rem] text-muted">
                       {study.meta}
                     </p>
                   </div>
 
-                  <p className="max-w-[60ch] text-[1.02rem] leading-relaxed">
+                  <p className="max-w-[54ch] text-[1.1rem] leading-[1.55] font-medium">
                     {study.summary}
                   </p>
 
@@ -92,10 +93,10 @@ export function Work() {
                     {study.points.map((point) => (
                       <div
                         key={point.label}
-                        className="grid gap-1 border-b border-line py-3 sm:grid-cols-[7.5rem_1fr] sm:gap-4"
+                        className="grid gap-1.5 border-b border-line py-4 sm:grid-cols-[7.5rem_1fr] sm:gap-5"
                       >
                         <dt className="meta-label pt-1">{point.label}</dt>
-                        <dd className="text-[0.92rem] leading-relaxed">
+                        <dd className="text-[0.95rem] leading-[1.65]">
                           {point.text}
                         </dd>
                       </div>
@@ -104,7 +105,7 @@ export function Work() {
                 </div>
 
                 {Diagram ? (
-                  <div className="flex flex-col gap-5 border-t-2 border-border bg-bg p-5 sm:p-7 lg:border-t-0">
+                  <div className="flex flex-col gap-6 border-t-2 border-border bg-bg p-6 sm:p-8 lg:border-t-0 lg:p-9">
                     <div className="flex items-center justify-between gap-3">
                       <p className="meta-label text-fg">Architecture</p>
                       <p className="font-mono text-[0.58rem] tracking-[0.08em] text-muted uppercase">
@@ -118,7 +119,7 @@ export function Work() {
 
               {/* ---------- Production failure → architecture ---------- */}
               {study.failure ? (
-                <div className="flex flex-col gap-4 border-t-2 border-border p-5 sm:p-7">
+                <div className="flex flex-col gap-5 border-t-2 border-border p-6 sm:p-8 lg:p-9">
                   <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
                     <p className="meta-label text-fg">Production failure</p>
                     <p className="font-mono text-[0.58rem] tracking-[0.08em] text-muted uppercase">
@@ -132,7 +133,7 @@ export function Work() {
                       return (
                         <li
                           key={step.label}
-                          className={`relative flex flex-col gap-2 p-4 ${
+                          className={`relative flex flex-col gap-2.5 p-5 ${
                             i > 0
                               ? "border-t border-line md:border-t-0 md:border-l"
                               : ""
@@ -147,7 +148,7 @@ export function Work() {
                             ) : null}
                             {step.label}
                           </span>
-                          <span className="display text-[1.05rem] leading-[1.05]">
+                          <span className="display text-[1.35rem] leading-[1.02] md:text-[1.45rem]">
                             {step.text}
                           </span>
                           {step.detail ? (
@@ -180,7 +181,7 @@ export function Work() {
               ) : null}
 
               {/* ---------- Technical metadata + navigation ---------- */}
-              <div className="flex flex-wrap items-center gap-2 border-t-2 border-border p-4 sm:px-7">
+              <div className="flex flex-wrap items-center gap-2 border-t-2 border-border p-5 sm:px-8 lg:px-9">
                 {study.tags.map((tag) => (
                   <span key={tag} className="chip-strong">
                     {tag}

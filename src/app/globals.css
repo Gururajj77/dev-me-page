@@ -84,7 +84,7 @@
     font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.55;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -278,7 +278,7 @@
   /* Small monospace label above a value (metadata layer). */
   .meta-label {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -385,12 +385,12 @@
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
+    gap: 0.2rem;
     max-width: 100%;
     border: 1px solid var(--border);
     background: var(--surface);
-    padding: 0.5rem 0.75rem;
-    font-size: 0.66rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     line-height: 1.2;
@@ -399,18 +399,30 @@
     color: var(--fg);
   }
 
+  /* Rank: hub (ends of the primary path), mid (primary path), minor (support). */
   .arch-node-hub {
     border-width: 2px;
-    padding: 0.7rem 1.25rem;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.92rem;
+    letter-spacing: 0.1em;
+  }
+
+  .arch-node-mid {
+    border-width: 2px;
+    padding: 0.75rem 1.15rem;
     font-size: 0.78rem;
   }
 
   .arch-node-sub {
-    font-size: 0.58rem;
+    font-size: 0.6rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: none;
     color: var(--muted);
+  }
+
+  .arch-node-hub .arch-node-sub {
+    font-size: 0.66rem;
   }
 
   .arch-state {
@@ -469,17 +481,18 @@
   .arch-stub {
     grid-column: 1 / -1;
     position: relative;
-    height: 1.6rem;
+    height: 2.25rem;
   }
 
+  /* The centre column is the primary path: 3px against 2px elsewhere. */
   .arch-stub::before {
     content: "";
     position: absolute;
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 2px;
-    margin-left: -1px;
+    width: 3px;
+    margin-left: -1.5px;
     background: var(--border);
   }
 
@@ -488,7 +501,7 @@
     left: calc(50% + 0.6rem);
     top: 50%;
     transform: translateY(-50%);
-    font-size: 0.56rem;
+    font-size: 0.6rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -500,7 +513,7 @@
      ::before is the horizontal bar segment. */
   .arch-fan {
     position: relative;
-    height: 1.4rem;
+    height: 1.9rem;
   }
 
   .arch-fan::after {
@@ -539,6 +552,11 @@
     right: 0;
   }
 
+  .arch-fan-c::after {
+    width: 3px;
+    margin-left: -1.5px;
+  }
+
   .arch-fan-r::before {
     left: 0;
     right: 50%;
@@ -546,18 +564,32 @@
 
   @media (max-width: 640px) {
     .arch-node {
-      padding: 0.42rem 0.45rem;
-      font-size: 0.6rem;
-      letter-spacing: 0.05em;
+      padding: 0.5rem 0.5rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
     }
 
     .arch-node-hub {
-      padding: 0.55rem 0.85rem;
+      padding: 0.7rem 1rem;
+      font-size: 0.78rem;
+    }
+
+    .arch-node-mid {
+      padding: 0.6rem 0.75rem;
       font-size: 0.68rem;
     }
 
-    .arch-node-sub {
-      font-size: 0.54rem;
+    .arch-node-sub,
+    .arch-node-hub .arch-node-sub {
+      font-size: 0.56rem;
+    }
+
+    .arch-stub {
+      height: 1.9rem;
+    }
+
+    .arch-fan {
+      height: 1.6rem;
     }
   }
 }

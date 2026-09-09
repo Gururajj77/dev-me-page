@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { PopIn } from "@/components/PopIn";
 
 type Tone = "external" | "engine" | "state" | "product";
+type Rank = "hub" | "mid" | "minor";
 
 const legend: readonly { tone: Tone; label: string }[] = [
   { tone: "external", label: "External system" },
@@ -16,19 +17,21 @@ function Node({
   children,
   sub,
   tone,
-  hub = false,
+  rank = "minor",
   live = false,
 }: {
   children: ReactNode;
   sub?: string;
   tone: Tone;
-  hub?: boolean;
+  rank?: Rank;
   live?: boolean;
 }) {
   return (
     <div
       data-node
-      className={`arch-node arch-node-${tone} ${hub ? "arch-node-hub" : ""}`}
+      className={`arch-node arch-node-${tone} ${
+        rank === "hub" ? "arch-node-hub" : rank === "mid" ? "arch-node-mid" : ""
+      }`}
     >
       <span>
         {live ? <span className="arch-state" aria-hidden /> : null}
@@ -61,17 +64,18 @@ const description =
   "KnotCMS architecture. Notion is the source of truth and feeds a sync engine on Cloudflare Workers over OAuth and the Notion API. The engine uses D1 for state, KV for sync cursors and Queues for retries, then writes to Framer CMS collections. Billing, the dashboard and webhooks sit on top.";
 
 /**
- * HTML/CSS system diagram. Nodes are coloured by tier (see legend), fade in
- * as the card enters the viewport, and connectors are pure CSS. The figure is
- * exposed as one image to assistive technology with a prose description.
+ * HTML/CSS system diagram. The primary path (Notion → Sync engine → Queues →
+ * Framer CMS) runs down the centre column with heavier nodes and a 3px line;
+ * D1, KV and the product surfaces hang off it as lighter nodes. Nodes are
+ * coloured by tier (see legend) and fade in as the card enters the viewport.
  */
 export function KnotcmsArchitecture() {
   return (
-    <div className="flex flex-1 flex-col gap-5">
+    <div className="flex flex-1 flex-col gap-6">
       <figure role="img" aria-label={description} className="w-full">
         <PopIn className="arch" selector="[data-node]" stagger={0.05} y={6}>
           <div className="arch-span">
-            <Node tone="external" sub="source of truth">
+            <Node tone="external" rank="hub" sub="source of truth">
               Notion
             </Node>
           </div>
@@ -79,7 +83,7 @@ export function KnotcmsArchitecture() {
           <Stub label="OAuth / API" />
 
           <div className="arch-span">
-            <Node tone="engine" hub live sub="Cloudflare Workers">
+            <Node tone="engine" rank="hub" live sub="Cloudflare Workers">
               Sync engine
             </Node>
           </div>
@@ -93,13 +97,13 @@ export function KnotcmsArchitecture() {
             </Node>
           </div>
           <div className="arch-cell">
-            <Node tone="state" sub="cursors">
-              KV
+            <Node tone="state" rank="mid" sub="retry · batching">
+              Queues
             </Node>
           </div>
           <div className="arch-cell">
-            <Node tone="state" sub="retry">
-              Queues
+            <Node tone="state" sub="cursors">
+              KV
             </Node>
           </div>
 
@@ -107,7 +111,7 @@ export function KnotcmsArchitecture() {
           <Stub />
 
           <div className="arch-span">
-            <Node tone="external" hub sub="collections">
+            <Node tone="external" rank="hub" sub="collections">
               Framer CMS
             </Node>
           </div>
