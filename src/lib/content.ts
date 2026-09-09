@@ -3,7 +3,7 @@ export const site = {
   brand: "gururaj.dev",
   title: "Gururaj J — Frontend Engineer",
   description:
-    "Frontend platform engineer building the component systems and docs infrastructure other engineers ship on.",
+    "Frontend engineer building the component systems other engineers ship on, and the product my customers pay for.",
   location: "Bengaluru, IND",
   timezone: "UTC +05:30",
   links: {
@@ -18,12 +18,12 @@ export const site = {
 } as const;
 
 export const hero = {
-  eyebrow: "Frontend platform engineer",
+  eyebrow: "Frontend engineer",
   tagline:
-    "I build the component systems and docs infrastructure other engineers ship on.",
-  bio: "Five years in production frontend, the last two on IBM's Carbon Design System — shared components, upgrade paths, and documentation used by product teams I never meet. Nights and weekends I run KnotCMS, a Notion-to-Framer sync I built and operate end to end.",
+    "I build the component systems other engineers ship on, and the product my customers pay for.",
+  bio: "Five years in production frontend, the last two on IBM's Carbon Design System, where I own shared components, upgrade paths, and the docs site that decides whether teams adopt them. Alongside that I run KnotCMS, a Notion to Framer sync with paying customers, where I own onboarding, dashboard, billing, and support myself.",
   availability:
-    "Open to senior frontend-platform roles — design systems, DX tooling, docs platforms.",
+    "Open to frontend engineering roles on small teams. Product surfaces, design systems, developer tooling.",
   availabilityMeta:
     "Bengaluru or remote · UTC +05:30 · 60-day notice · I reply within a day",
   ctaPrimary: "Start a conversation",
@@ -36,8 +36,9 @@ export const heroStat = {
   meta: "6 major upgrades · 0 unplanned breaking changes",
   secondary: [
     { value: "5,000+", label: "developers served" },
-    { value: "40K", label: "weekly npm consumers" },
+    { value: "129K", label: "weekly npm consumers" },
     { value: "85%", label: "test coverage · @carbon/react" },
+    { value: "4", label: "core components owned end to end" },
   ],
 } as const;
 
@@ -46,11 +47,28 @@ export const shipping = {
   lastShippedDetail: "knotcms · billing webhooks",
 } as const;
 
-export const caseStudies = [
+export type CaseMedia =
+  | { kind: "image"; src: string; alt: string }
+  | { kind: "video"; src: string; poster?: string; alt: string };
+
+export type CaseStudy = {
+  id: string;
+  accent: "pink";
+  title: string;
+  meta: string;
+  summary: string;
+  points: readonly { label: string; text: string }[];
+  tags: readonly string[];
+  href: string;
+  caseHref?: string;
+  /** A real screenshot or clip under /public. When absent, the card renders without a banner. */
+  media?: CaseMedia;
+};
+
+export const caseStudies: readonly CaseStudy[] = [
   {
     id: "knotcms",
-    dropLabel: "drop: dashboard shot or 12s sync clip",
-    accent: "pink" as const,
+    accent: "pink",
     title: "KnotCMS",
     meta: "Solo product · alongside IBM · since Jun 2026",
     summary:
@@ -77,19 +95,11 @@ export const caseStudies = [
     href: "https://knotcms.com",
     caseHref: "/work/knotcms",
   },
-] as const;
-
-export const playground = {
-  eyebrow: "Live — a component I own",
-  heading: "Try it, don't take my word for it",
-  sub: "Every state below is keyboard reachable, announces itself, and holds its size while loading. Tab into it.",
-  label: "Save changes",
-  loadingLabel: "Saving…",
-} as const;
+];
 
 export const howIWork = {
   eyebrow: "How I work",
-  meta: "three rules",
+  meta: "four rules",
   principles: [
     {
       title: "The API is the product",
@@ -103,6 +113,10 @@ export const howIWork = {
       title: "Docs are adoption, not decoration",
       body: "Nobody adopts what they can't understand alone at 11pm. I measure a component by how few questions it generates.",
     },
+    {
+      title: "The flow that technically works can still be broken",
+      body: "Filtering our side navigation returned the matched page and hid everything beneath it, so anyone searching for a section landed at a dead end. It passed every test. I rebuilt it without waiting for a spec, design adopted it, and our SUPR-Q score went up.",
+    },
   ],
 } as const;
 
@@ -112,7 +126,7 @@ export const experience = [
     periodEnd: "present",
     role: "Founder & engineer, KnotCMS",
     badge: "concurrent",
-    detail: "Solo · evenings and weekends, alongside IBM",
+    detail: "Solo · Cloudflare Workers · paying customers",
   },
   {
     period: "Feb 2024",
@@ -142,8 +156,6 @@ export const toolkit = {
   comfortableLabel: "Reach for",
   comfortableSubtitle: "shipped with",
   comfortable: ["Next.js", "Cloudflare Workers", "Angular", "MongoDB"],
-  systemNote: "This page is built from my own tokens and components.",
-  systemLinkLabel: "Read the system",
 } as const;
 
 export const contact = {
@@ -166,8 +178,6 @@ export const contact = {
     },
   ],
   emailLabel: "Email — fastest",
-  notLookingFor:
-    'Not looking for: agency contracts, unpaid trials, or "quick calls" without a role.',
 } as const;
 
 export const changelog = {

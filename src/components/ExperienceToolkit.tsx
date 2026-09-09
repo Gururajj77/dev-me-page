@@ -1,6 +1,6 @@
 "use client";
 
-import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 import { experience, site, toolkit } from "@/lib/content";
 import { PopIn } from "@/components/PopIn";
 
@@ -49,7 +49,7 @@ export function ExperienceToolkit() {
           rel="noopener noreferrer"
           className="btn-brutal btn-yellow justify-between"
         >
-          <span>Résumé — PDF, one page</span>
+          <span>Résumé — PDF, two pages</span>
           <FiArrowRight className="size-4" aria-hidden />
         </a>
       </div>
@@ -102,22 +102,6 @@ export function ExperienceToolkit() {
               </span>
             ))}
           </div>
-        </div>
-
-        <div className="flex items-center justify-between gap-4 border-t border-line px-7 py-7 sm:px-8">
-          <p className="max-w-md text-[0.9rem] leading-relaxed text-muted">
-            {toolkit.systemNote}
-            <br />
-            <a
-              href={site.links.source}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-fg"
-            >
-              {toolkit.systemLinkLabel}
-            </a>
-          </p>
-          <FiArrowUpRight className="size-6 shrink-0" aria-hidden />
         </div>
       </div>
     </PopIn>

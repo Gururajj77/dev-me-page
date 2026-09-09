@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import { caseStudies } from "@/lib/content";
@@ -7,10 +8,6 @@ import { PopIn } from "@/components/PopIn";
 
 const titleAccent = {
   pink: "underline decoration-pink decoration-4 underline-offset-6",
-} as const;
-
-const bannerAccent = {
-  pink: "case-banner-pink",
 } as const;
 
 const liftAccent = {
@@ -36,11 +33,29 @@ export function Work() {
 
           const cardBody = (
             <>
-              <div className={`case-banner ${bannerAccent[study.accent]}`}>
-                <span className="border border-border bg-surface px-2 py-1 font-mono text-[0.62rem] tracking-wide uppercase">
-                  {study.dropLabel}
-                </span>
-              </div>
+              {study.media ? (
+                <div className="relative aspect-[16/9] w-full overflow-hidden border-b-2 border-border bg-bg">
+                  {study.media.kind === "video" ? (
+                    <video
+                      src={study.media.src}
+                      poster={study.media.poster}
+                      aria-label={study.media.alt}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                  ) : (
+                    <Image
+                      src={study.media.src}
+                      alt={study.media.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                </div>
+              ) : null}
 
               <div className="flex flex-1 flex-col gap-3.5 p-6 sm:p-7">
                 <div className="flex items-start justify-between gap-4">
@@ -82,7 +97,7 @@ export function Work() {
             </>
           );
 
-          if ("caseHref" in study && study.caseHref) {
+          if (study.caseHref) {
             return (
               <Link
                 key={study.id}

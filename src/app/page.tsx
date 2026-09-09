@@ -1,7 +1,7 @@
 import { TopBar } from "@/components/TopBar";
 import { Hero } from "@/components/Hero";
 import { Work } from "@/components/Work";
-import { Playground } from "@/components/Playground";
+import { HowIWork } from "@/components/HowIWork";
 import { ExperienceToolkit } from "@/components/ExperienceToolkit";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
@@ -19,7 +19,7 @@ export default function HomePage() {
         <TopBar />
         <Hero />
         <Work />
-        <Playground />
+        <HowIWork />
         <ExperienceToolkit />
         <Contact />
         <Footer />

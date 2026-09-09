@@ -67,10 +67,6 @@ export function Contact() {
               LinkedIn <FiLinkedin className="size-4" aria-hidden />
             </a>
           </div>
-
-          <p className="pt-1 font-mono text-[0.68rem] leading-relaxed">
-            {contact.notLookingFor}
-          </p>
         </div>
       </div>
     </PopIn>
