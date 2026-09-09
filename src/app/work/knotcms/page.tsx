@@ -15,15 +15,6 @@ export const metadata: Metadata = {
   },
 };
 
-function Todo({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="border border-dashed border-pink px-4 py-3 font-mono text-[0.78rem] leading-relaxed text-pink">
-      <span className="font-bold tracking-wide uppercase">Todo — </span>
-      {children}
-    </p>
-  );
-}
-
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="display text-[clamp(1.5rem,3.5vw,1.9rem)]">{children}</h2>
@@ -126,7 +117,9 @@ export default function KnotCmsCaseStudyPage() {
           <p className="max-w-[70ch] text-[1.02rem] leading-relaxed">
             {knotcmsCase.constraint.body}
           </p>
-          <Todo>{knotcmsCase.constraint.todo}</Todo>
+          <p className="max-w-[70ch] text-[1.02rem] leading-relaxed">
+            {knotcmsCase.constraint.why}
+          </p>
         </div>
       </PopIn>
 
@@ -139,12 +132,9 @@ export default function KnotCmsCaseStudyPage() {
           <p className="max-w-[70ch] text-[1.05rem] leading-relaxed">
             {knotcmsCase.whereItBroke.body}
           </p>
-          <Todo>{knotcmsCase.whereItBroke.todo}</Todo>
-          <CaseStudyMedia
-            src="/work/knotcms/knotcms-failure-logs.png"
-            alt="The Workers logs from the failing run, the subrequest error visible."
-            aspect="16/9"
-          />
+          <p className="max-w-[70ch] text-[1.05rem] leading-relaxed">
+            {knotcmsCase.whereItBroke.seen}
+          </p>
         </div>
       </PopIn>
 
@@ -157,12 +147,21 @@ export default function KnotCmsCaseStudyPage() {
           <p className="max-w-[70ch] text-[1.02rem] leading-relaxed">
             {knotcmsCase.theFix.body}
           </p>
-          <Todo>{knotcmsCase.theFix.todo}</Todo>
-          <CaseStudyMedia
-            src="/work/knotcms/knotcms-queue-dashboard.png"
-            alt="The Queues dashboard during a large sync, batches being consumed."
-            aspect="16/9"
-          />
+          {knotcmsCase.theFix.subsections.map((sub) => (
+            <div key={sub.title} className="flex flex-col gap-4">
+              <h3 className="max-w-[70ch] text-[1.05rem] leading-snug font-semibold">
+                {sub.title}
+              </h3>
+              {sub.paragraphs.map((text, i) => (
+                <p
+                  key={i}
+                  className="max-w-[70ch] text-[1.02rem] leading-relaxed"
+                >
+                  {text}
+                </p>
+              ))}
+            </div>
+          ))}
         </div>
       </PopIn>
 
@@ -172,45 +171,38 @@ export default function KnotCmsCaseStudyPage() {
           className="flex flex-col gap-5 border border-line p-7 sm:p-8"
         >
           <SectionHeading>Where it stands now</SectionHeading>
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse font-mono text-[0.85rem]">
-                <thead>
-                  <tr className="border-b-2 border-border">
-                    {knotcmsCase.numbers.columns.map((col, i) => (
-                      <th
-                        key={col || `col-${i}`}
-                        scope="col"
-                        className="py-2.5 pr-4 text-left text-[0.68rem] tracking-wide text-muted uppercase"
-                      >
-                        {col}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {knotcmsCase.numbers.rows.map((row) => (
-                    <tr key={row.label} className="border-b border-line">
-                      <th
-                        scope="row"
-                        className="py-3 pr-4 text-left font-bold"
-                      >
-                        {row.label}
-                      </th>
-                      <td className="py-3 pr-4 text-muted">
-                        {row.testedUpTo}
-                      </td>
-                      <td className="py-3 text-muted">{row.time}</td>
-                    </tr>
+          <div className="max-w-[70ch] overflow-x-auto">
+            <table className="w-full border-collapse font-mono text-[0.85rem]">
+              <thead>
+                <tr className="border-b-2 border-border">
+                  {knotcmsCase.numbers.columns.map((col, i) => (
+                    <th
+                      key={col || `col-${i}`}
+                      scope="col"
+                      className="py-2.5 pr-4 text-left text-[0.68rem] tracking-wide text-muted uppercase"
+                    >
+                      {col}
+                    </th>
                   ))}
-                </tbody>
-              </table>
-            </div>
-            <CaseStudyMedia
-              src="/work/knotcms/knotcms-sync-history.png"
-              alt="The sync history list, showing several completed syncs with row counts and durations."
-              aspect="16/10"
-            />
+                </tr>
+              </thead>
+              <tbody>
+                {knotcmsCase.numbers.rows.map((row) => (
+                  <tr key={row.label} className="border-b border-line">
+                    <th
+                      scope="row"
+                      className="py-3 pr-4 text-left font-bold"
+                    >
+                      {row.label}
+                    </th>
+                    <td className="py-3 pr-4 text-muted">
+                      {row.testedUpTo}
+                    </td>
+                    <td className="py-3 text-muted">{row.time}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
           <p className="max-w-[70ch] text-[0.95rem] leading-relaxed text-muted">
             {knotcmsCase.numbers.note}
@@ -224,10 +216,11 @@ export default function KnotCmsCaseStudyPage() {
           className="flex flex-col gap-5 border border-line p-7 sm:p-8"
         >
           <SectionHeading>The first user</SectionHeading>
-          <p className="max-w-[70ch] text-[1.02rem] leading-relaxed">
-            {knotcmsCase.firstUser.body}
-          </p>
-          <Todo>{knotcmsCase.firstUser.todo}</Todo>
+          {knotcmsCase.firstUser.paragraphs.map((text, i) => (
+            <p key={i} className="max-w-[70ch] text-[1.02rem] leading-relaxed">
+              {text}
+            </p>
+          ))}
         </div>
       </PopIn>
 
@@ -237,7 +230,16 @@ export default function KnotCmsCaseStudyPage() {
           className="flex flex-col gap-5 border border-line p-7 sm:p-8"
         >
           <SectionHeading>What I&apos;d do differently</SectionHeading>
-          <Todo>{knotcmsCase.differently.todo}</Todo>
+          {knotcmsCase.differently.points.map((point) => (
+            <div key={point.title} className="flex flex-col gap-2">
+              <h3 className="max-w-[70ch] text-[1.05rem] leading-snug font-semibold">
+                {point.title}
+              </h3>
+              <p className="max-w-[70ch] text-[1.02rem] leading-relaxed">
+                {point.body}
+              </p>
+            </div>
+          ))}
         </div>
       </PopIn>
 
