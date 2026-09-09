@@ -349,3 +349,134 @@ export const knotcmsCase = {
   },
   closeLine: "Questions about this, or about what I could build for you.",
 } as const;
+
+/**
+ * Structured layer for the case-study page. Every value here is drawn from the
+ * prose in `knotcmsCase`, the homepage card, or the résumé; nothing new is claimed.
+ */
+export const knotcmsCaseSpec = {
+  systemLabel: "Case study · System 01",
+  route: "Notion → Framer CMS",
+  tags: ["Live product", "Solo built", "Paying customers"],
+  facts: [
+    { label: "Status", value: "Live", live: true },
+    { label: "Role", value: "Founder / engineer" },
+    { label: "Type", value: "Production SaaS" },
+    { label: "Input", value: "Notion" },
+    { label: "Output", value: "Framer CMS" },
+    { label: "Infrastructure", value: "Cloudflare Workers" },
+  ],
+  index: [
+    { n: "01", id: "system", label: "System" },
+    { n: "02", id: "architecture", label: "Architecture" },
+    { n: "03", id: "constraint", label: "Constraint" },
+    { n: "04", id: "failure", label: "Failure" },
+    { n: "05", id: "fix", label: "Fix" },
+    { n: "06", id: "production", label: "Production" },
+    { n: "07", id: "real-usage", label: "Real usage" },
+    { n: "08", id: "judgment", label: "Judgment" },
+  ],
+  flow: ["Notion", "KnotCMS sync", "Framer CMS"],
+  infrastructure: ["D1", "KV", "Queues", "Webhooks"],
+  summary: [
+    { label: "Input", value: "Notion database" },
+    { label: "Process", value: "KnotCMS sync" },
+    { label: "State", value: "D1 / KV" },
+    { label: "Async work", value: "Queues" },
+    { label: "Output", value: "Framer CMS" },
+    { label: "Recovery", value: "Retries / webhook recovery" },
+  ],
+  architectureLine:
+    "Event-driven Workers, D1 for state, KV for sync cursors, queues for retries, OAuth against Notion and Framer.",
+  constraintLabels: [
+    "CPU time limit",
+    "Subrequest cap",
+    "Rate limits",
+    "Async work",
+    "Retries",
+    "Ordering",
+    "Idempotency",
+    "Backpressure",
+  ],
+  whyWorkersLabel: "Decision — why Workers",
+  failure: {
+    headline: "7,000 rows",
+    sub: "Workers subrequest fan-out failure",
+    sequence: [
+      {
+        label: "Symptom",
+        text: "Requests failing with a CPU limit exceeded error, and nothing more specific than that.",
+      },
+      {
+        label: "Root cause",
+        text: "A single sync invocation issuing more outbound calls than a Worker invocation is allowed to make.",
+      },
+      {
+        label: "Impact",
+        text: "Stress testing surfaced the failure at around 7,000 rows. The error named the limit, not the fan-out behind it.",
+      },
+    ],
+  },
+  before: [
+    { label: "Notion", tone: "external" },
+    { label: "Worker", tone: "engine" },
+    { label: "Many subrequests", tone: "plain" },
+    { label: "Failure", tone: "failure" },
+  ],
+  after: [
+    { label: "Notion", tone: "external" },
+    { label: "Sync", tone: "engine" },
+    { label: "Queues", tone: "state" },
+    { label: "Batched work", tone: "state" },
+    { label: "Framer CMS", tone: "external" },
+  ],
+  decision: [
+    { label: "Decision", text: "Move sync work out of request fan-out" },
+    { label: "Constraint", text: "Workers subrequest limit" },
+    { label: "Change", text: "Queues + batched invocations" },
+    { label: "Result", text: "Reliable sync" },
+  ],
+  production: [
+    { label: "Status", value: "Live", live: true },
+    { label: "Usage", value: "Paying users" },
+    { label: "Billing", value: "Subscriptions, self-service" },
+    { label: "Sync", value: "Production" },
+  ],
+  firstUserSequence: [
+    "User",
+    "Problem",
+    "Diagnosis → fix",
+    "Product change",
+    "Outcome",
+  ],
+  screenshots: {
+    overview: {
+      n: "01",
+      kicker: "Product surface",
+      title: "Sync status",
+      src: "/work/knotcms/knotcms-framer-collection.png",
+      alt: "The KnotCMS project overview. The sync pipeline is active, Notion synced to Framer CMS and deployed three hours ago, seven items in Framer, webhook active, auto-publish to the live site.",
+      caption:
+        "Project overview: connection health and sync direction, last sync and deploy, webhook and auto-publish state.",
+    },
+    mapping: {
+      n: "02",
+      kicker: "Product surface",
+      title: "Field mapping",
+      src: "/work/knotcms/knotcms-mapping.png",
+      alt: "The field mapping screen in the dashboard, a Notion database on the left, Framer fields on the right, a few fields mapped.",
+      caption:
+        "Map fields and set automation: each Notion field becomes a Framer CMS column, text as plain or rich.",
+    },
+    queue: {
+      n: "03",
+      kicker: "Infrastructure",
+      title: "Cloudflare Queues",
+      src: "/work/knotcms/knotcms-queue-dashboard.png",
+      alt: "The Cloudflare Queues dashboard showing the sync-jobs queue as active, with five messages queued and an average lag of 13.8 seconds.",
+      caption: "The sync-jobs queue in the Cloudflare dashboard.",
+    },
+  },
+} as const;
+
+export type ChainTone = (typeof knotcmsCaseSpec.before)[number]["tone"] | (typeof knotcmsCaseSpec.after)[number]["tone"];
