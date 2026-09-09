@@ -13,9 +13,9 @@ export function Footer() {
   const pageUpdated = currentPageUpdated();
 
   return (
-    <div
+    <footer
       id="changelog"
-      className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 font-mono text-[0.68rem] text-muted"
+      className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-border pt-5 font-mono text-[0.68rem] text-muted"
     >
       <p>
         {site.name} · {site.location} · {site.timezone}
@@ -31,6 +31,6 @@ export function Footer() {
           {changelog.linkLabel}
         </a>
       </p>
-    </div>
+    </footer>
   );
 }

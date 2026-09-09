@@ -30,7 +30,16 @@ export const hero = {
   ctaSecondary: "See the case study",
 } as const;
 
+/** Metadata layer under the hero statement. Labels are monospace, values are body text. */
+export const heroOwnership = [
+  { label: "Systems", value: "Carbon / KnotCMS" },
+  { label: "Surface", value: "Components / Docs / Product" },
+  { label: "Ownership", value: "Design → API → Implementation → Production" },
+] as const;
+
 export const heroStat = {
+  panelLabel: "Production footprint",
+  panelMeta: "Carbon Design System · IBM",
   value: "100+",
   label: "product teams ship on components I maintain",
   meta: "6 major upgrades · 0 unplanned breaking changes",
@@ -43,13 +52,19 @@ export const heroStat = {
 } as const;
 
 export const shipping = {
-  lastShipped: "Shipped 4 days ago",
-  lastShippedDetail: "knotcms · billing webhooks",
+  panelLabel: "Currently shipping",
+  product: "KnotCMS",
+  productDetail: "billing webhooks",
+  status: "Live",
+  lastShipped: "4 days ago",
+  stack: "Workers / D1 / Queues",
 } as const;
 
-export type CaseMedia =
-  | { kind: "image"; src: string; alt: string }
-  | { kind: "video"; src: string; poster?: string; alt: string };
+export type FailureStep = {
+  label: string;
+  text: string;
+  detail?: string;
+};
 
 export type CaseStudy = {
   id: string;
@@ -58,11 +73,11 @@ export type CaseStudy = {
   meta: string;
   summary: string;
   points: readonly { label: string; text: string }[];
+  /** problem → diagnosis → architectural change → outcome */
+  failure?: readonly FailureStep[];
   tags: readonly string[];
   href: string;
   caseHref?: string;
-  /** A real screenshot or clip under /public. When absent, the card renders without a banner. */
-  media?: CaseMedia;
 };
 
 export const caseStudies: readonly CaseStudy[] = [
@@ -91,7 +106,17 @@ export const caseStudies: readonly CaseStudy[] = [
         text: "idempotent replay — a webhook can arrive twice, late, or out of order, and the CMS must still converge on one correct tree.",
       },
     ],
-    tags: ["TypeScript", "Workers", "D1", "KV"],
+    failure: [
+      { label: "Problem", text: "7,000 rows" },
+      { label: "Diagnosis", text: "Workers subrequest fan-out failure" },
+      { label: "Change", text: "Queue-based batched invocations" },
+      {
+        label: "Outcome",
+        text: "Reliable sync",
+        detail: "tested to 5,000 rows in ~3 min",
+      },
+    ],
+    tags: ["TypeScript", "Workers", "D1", "KV", "Queues", "OAuth", "Webhooks"],
     href: "https://knotcms.com",
     caseHref: "/work/knotcms",
   },
@@ -104,43 +129,65 @@ export const howIWork = {
     {
       title: "The API is the product",
       body: "A component's props outlive its markup. I design the interface first and defend it in review, because every prop is a promise someone else will hold me to.",
+      evidence: "Carbon / component API",
     },
     {
       title: "A breaking change ships with its migration",
       body: "Codemod, lint rule, dual-support window, dated deprecation. If I can't automate the upgrade, the change isn't ready.",
+      evidence: "Carbon / platform upgrades",
     },
     {
       title: "Docs are adoption, not decoration",
       body: "Nobody adopts what they can't understand alone at 11pm. I measure a component by how few questions it generates.",
+      evidence: "Carbon / documentation platform",
     },
     {
       title: "The flow that technically works can still be broken",
       body: "Filtering our side navigation returned the matched page and hid everything beneath it, so anyone searching for a section landed at a dead end. It passed every test. I rebuilt it without waiting for a spec, design adopted it, and our SUPR-Q score went up.",
+      evidence: "Carbon / navigation UX",
     },
   ],
 } as const;
 
-export const experience = [
+export type ExperienceRecord = {
+  period: string;
+  periodEnd: string;
+  role: string;
+  org: string;
+  badge?: string;
+  /** What the role was made of. Rendered as a monospace line. */
+  tags: readonly string[];
+  /** Evidence. Rendered as small bordered blocks. */
+  metrics: readonly string[];
+};
+
+export const experience: readonly ExperienceRecord[] = [
   {
     period: "2026",
     periodEnd: "present",
-    role: "Founder & engineer, KnotCMS",
+    role: "Founder & engineer",
+    org: "KnotCMS",
     badge: "concurrent",
-    detail: "Solo · Cloudflare Workers · paying customers",
+    tags: ["Solo", "Cloudflare Workers", "Paying customers"],
+    metrics: ["Solo shipped", "Production", "Billing + webhooks"],
   },
   {
     period: "Feb 2024",
     periodEnd: "present",
     role: "Frontend developer",
-    detail: "IBM India · Carbon Design System",
+    org: "IBM India · Carbon Design System",
+    tags: ["Shared components", "Documentation platform", "Migrations"],
+    metrics: ["5,000+ developers", "129K weekly consumers", "4 components owned"],
   },
   {
     period: "Sep 2021",
     periodEnd: "Feb 2024",
     role: "Project engineer",
-    detail: "Wipro · enterprise Angular applications",
+    org: "Wipro · Wells Fargo",
+    tags: ["Angular", "Enterprise applications", "Modernization"],
+    metrics: ["5 enterprise apps", "WebForms → Angular"],
   },
-] as const;
+];
 
 export const toolkit = {
   everydayLabel: "Every day",
@@ -156,6 +203,21 @@ export const toolkit = {
   comfortableLabel: "Reach for",
   comfortableSubtitle: "shipped with",
   comfortable: ["Next.js", "Cloudflare Workers", "Angular", "MongoDB"],
+  layersLabel: "Layers",
+  layers: [
+    {
+      label: "UI",
+      items: ["TypeScript", "React", "Lit", "Design systems", "Storybook"],
+    },
+    {
+      label: "Product",
+      items: ["Next.js", "PayloadCMS", "Angular", "MongoDB"],
+    },
+    {
+      label: "Platform",
+      items: ["Workers", "D1", "KV", "Queues", "OAuth", "Webhooks"],
+    },
+  ],
 } as const;
 
 export const contact = {

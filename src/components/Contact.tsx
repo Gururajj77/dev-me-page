@@ -1,74 +1,105 @@
 "use client";
 
-import { FiArrowRight, FiGithub, FiLinkedin } from "react-icons/fi";
+import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { contact, site } from "@/lib/content";
 import { PopIn } from "@/components/PopIn";
+import { SectionHead } from "@/components/SectionHead";
+
+/* Ink stays dark on the green panel in both themes. */
+const ink = "#111111";
 
 export function Contact() {
   return (
-    <PopIn>
-      <div
-        data-pop
-        id="contact"
-        className="tile bg-green grid gap-8 p-8 text-[var(--on-accent)] sm:p-10 md:grid-cols-[1.1fr_1fr]"
-      >
-        <div className="flex flex-col gap-5">
-          <h2 className="display text-[clamp(2rem,5.5vw,3rem)] leading-[0.98]">
-            {contact.headingLines[0]}
-            <br />
-            {contact.headingLines[1]}
-          </h2>
-          <div className="flex flex-col gap-3.5 text-[1.02rem] leading-relaxed">
-            {contact.steps.map((step) => (
-              <div key={step.n} className="flex gap-3">
-                <span className="pt-0.5 font-mono text-[0.72rem] font-bold">
-                  {step.n}
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="flex scroll-mt-6 flex-col gap-5"
+    >
+      <SectionHead as="p" index="04" label="Contact" meta="I reply within a day" />
+
+      <PopIn>
+        <div
+          data-pop
+          className="tile grid gap-8 bg-green p-6 sm:p-9 lg:grid-cols-[1.1fr_1fr] lg:gap-12"
+          style={{ color: ink, borderColor: ink }}
+        >
+          <div className="flex flex-col gap-6">
+            <h2
+              id="contact-heading"
+              className="display text-[clamp(2rem,4.5vw,3.25rem)] leading-[0.98]"
+            >
+              {contact.headingLines[0]}
+              <br />
+              {contact.headingLines[1]}
+            </h2>
+
+            <ol
+              className="flex flex-col border-t-2"
+              style={{ borderColor: ink }}
+            >
+              {contact.steps.map((step) => (
+                <li
+                  key={step.n}
+                  className="grid grid-cols-[2.75rem_1fr] gap-4 border-b py-4 border-[#111111]/25"
+                >
+                  <span
+                    className="inline-flex h-fit w-fit px-1.5 py-0.5 font-mono text-[0.68rem] font-bold text-pink"
+                    style={{ background: ink }}
+                  >
+                    {step.n}
+                  </span>
+                  <p className="text-[1rem] leading-relaxed">
+                    <strong className="font-bold">{step.label}</strong>{" "}
+                    {step.text}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="flex flex-col justify-center gap-3">
+            <a
+              href={site.links.email}
+              className="group flex items-center justify-between gap-4 border-2 bg-[#f8f6ef] px-5 py-5 text-[#111111] transition-colors hover:bg-[#111111] hover:text-green"
+              style={{ borderColor: ink }}
+            >
+              <span className="flex min-w-0 flex-col gap-1">
+                <span className="font-mono text-[0.6rem] tracking-[0.14em] uppercase opacity-70">
+                  {contact.emailLabel}
                 </span>
-                <div>
-                  <strong className="font-bold">{step.label}</strong>{" "}
-                  {step.text}
-                </div>
-              </div>
-            ))}
+                <span className="truncate text-[1.1rem] font-bold tracking-tight">
+                  jdotgururaj@gmail.com
+                </span>
+              </span>
+              <FiArrowRight
+                className="size-5 shrink-0 transition-transform group-hover:translate-x-0.5"
+                aria-hidden
+              />
+            </a>
+
+            <div className="grid grid-cols-2 gap-3">
+              <a
+                href={site.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 border-2 px-4 py-3.5 text-[0.95rem] font-bold transition-colors hover:bg-[#111111] hover:text-green"
+                style={{ borderColor: ink }}
+              >
+                GitHub <FiArrowUpRight className="size-4" aria-hidden />
+              </a>
+              <a
+                href={site.links.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 border-2 px-4 py-3.5 text-[0.95rem] font-bold transition-colors hover:bg-[#111111] hover:text-green"
+                style={{ borderColor: ink }}
+              >
+                LinkedIn <FiArrowUpRight className="size-4" aria-hidden />
+              </a>
+            </div>
           </div>
         </div>
-
-        <div className="flex flex-col justify-center gap-3">
-          <a
-            href={site.links.email}
-            className="flex items-center justify-between gap-4 border-2 border-[#14120f] bg-[#fffdf8] px-6 py-5 text-[#14120f] shadow-[5px_5px_0_#14120f] transition-transform hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[2px_2px_0_#14120f]"
-          >
-            <span className="flex flex-col gap-1">
-              <span className="font-mono text-[0.62rem] tracking-[0.14em] uppercase opacity-60">
-                {contact.emailLabel}
-              </span>
-              <span className="text-[1.15rem] font-bold tracking-tight">
-                jdotgururaj@gmail.com
-              </span>
-            </span>
-            <FiArrowRight className="size-5 shrink-0" aria-hidden />
-          </a>
-
-          <div className="grid grid-cols-2 gap-3">
-            <a
-              href={site.links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between gap-3 border-2 border-[#14120f] px-4 py-3.5 text-[0.95rem] font-bold text-[#14120f] transition-colors hover:bg-[#14120f] hover:text-green"
-            >
-              GitHub <FiGithub className="size-4" aria-hidden />
-            </a>
-            <a
-              href={site.links.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-between gap-3 border-2 border-[#14120f] px-4 py-3.5 text-[0.95rem] font-bold text-[#14120f] transition-colors hover:bg-[#14120f] hover:text-green"
-            >
-              LinkedIn <FiLinkedin className="size-4" aria-hidden />
-            </a>
-          </div>
-        </div>
-      </div>
-    </PopIn>
+      </PopIn>
+    </section>
   );
 }

@@ -10,25 +10,28 @@
   --color-green: var(--green);
   --color-yellow: var(--yellow);
   --color-pink: var(--pink);
-  --color-blue: var(--blue);
 
   --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
+/*
+  Design tokens.
+  `--border` / `--line` are the historical names; `--ink` / `--rule` are the
+  spec's names and alias them so either vocabulary works in CSS.
+*/
 :root,
 [data-theme="light"] {
-  --bg: #f2efe6;
-  --surface: #ffffff;
-  --border: #0a0a0b;
-  --line: #d9d3c8;
-  --fg: #0a0a0b;
-  --muted: #55555e;
-  --green: #00c27a;
-  --yellow: #ffc300;
-  --pink: #ff5ca8;
-  --blue: #3d8bff;
-  --on-accent: #0a0a0b;
+  --bg: #f3f0e7;
+  --surface: #f8f6ef;
+  --border: #111111;
+  --line: #d8d4c9;
+  --fg: #111111;
+  --muted: #66635c;
+  --green: #00c982;
+  --yellow: #ffc400;
+  --pink: #ff4f9a;
+  --on-accent: #111111;
 }
 
 [data-theme="dark"] {
@@ -41,8 +44,12 @@
   --green: #00e585;
   --yellow: #ffd60a;
   --pink: #ff5ca8;
-  --blue: #4d9fff;
   --on-accent: #0a0a0b;
+}
+
+:root {
+  --ink: var(--border);
+  --rule: var(--line);
 }
 
 @layer base {
@@ -83,7 +90,7 @@
 
   ::selection {
     background: var(--yellow);
-    color: #0a0a0b;
+    color: #111111;
   }
 
   :focus-visible {
@@ -96,14 +103,9 @@
     text-decoration: none;
   }
 
-  /* Smooth color morph when View Transitions aren't used */
+  /* Smooth color morph when View Transitions aren't available */
   html.theme-animating,
-  html.theme-animating body,
-  html.theme-animating .tile,
-  html.theme-animating .chip,
-  html.theme-animating .icon-btn,
-  html.theme-animating .section-label,
-  html.theme-animating footer {
+  html.theme-animating * {
     transition:
       background-color 0.3s ease,
       color 0.3s ease,
@@ -146,116 +148,52 @@
 }
 
 @layer components {
+  /* ---------- Page grid ---------- */
+
   .shell {
     width: 100%;
-    max-width: min(1480px, calc(100% - 1.5rem));
+    max-width: 1320px;
     margin-inline: auto;
-    padding-inline: 0.75rem;
+    padding-inline: 1rem;
     box-sizing: border-box;
   }
 
   @media (min-width: 768px) {
     .shell {
-      max-width: min(1480px, calc(100% - 3rem));
-      padding-inline: 1.25rem;
+      padding-inline: 2rem;
     }
   }
 
-  @media (min-width: 1280px) {
-    .shell {
-      max-width: min(1560px, calc(100% - 4rem));
-      padding-inline: 1.5rem;
-    }
-  }
+  /* ---------- Containers ---------- */
 
+  /* Primary container: 2px ink border, no radius, no resting shadow. */
   .tile {
     border: 2px solid var(--border);
     background: transparent;
-    border-radius: 2px;
-    transition:
-      transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
-      box-shadow 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .tile-surface {
     background: var(--surface);
   }
 
-  [data-theme="light"] .tile {
-    box-shadow: 3px 3px 0 var(--border);
+  /* Opt-in lift for small interactive tiles only. */
+  .tile-lift {
+    transition:
+      transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .tile-lift:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 3px 3px 0 var(--border);
-  }
-
-  [data-theme="light"] .tile-lift:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--border);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--border);
   }
 
   .tile-lift:active {
-    transform: translate(2px, 2px);
+    transform: translate(0, 0);
     box-shadow: 0 0 0 var(--border);
   }
 
-  [data-theme="light"] .tile-lift:active {
-    transform: translate(3px, 3px);
-    box-shadow: 0 0 0 var(--border);
-  }
-
-  .tile-lift-green:hover {
-    box-shadow: 3px 3px 0 var(--green);
-  }
-
-  .tile-lift-blue:hover {
-    box-shadow: 3px 3px 0 var(--blue);
-  }
-
-  .tile-lift-yellow:hover {
-    box-shadow: 3px 3px 0 var(--yellow);
-  }
-
-  .tile-lift-pink:hover {
-    box-shadow: 3px 3px 0 var(--pink);
-  }
-
-  .tile-lift-white:hover {
-    box-shadow: 3px 3px 0 var(--border);
-  }
-
-  [data-theme="light"] .tile-lift-green {
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  [data-theme="light"] .tile-lift-green:hover {
-    box-shadow: 6px 6px 0 var(--green);
-  }
-
-  [data-theme="light"] .tile-lift-blue {
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  [data-theme="light"] .tile-lift-blue:hover {
-    box-shadow: 6px 6px 0 var(--blue);
-  }
-
-  [data-theme="light"] .tile-lift-yellow {
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  [data-theme="light"] .tile-lift-yellow:hover {
-    box-shadow: 6px 6px 0 var(--yellow);
-  }
-
-  [data-theme="light"] .tile-lift-pink {
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  [data-theme="light"] .tile-lift-pink:hover {
-    box-shadow: 6px 6px 0 var(--pink);
-  }
-
-  [data-theme="light"] .tile-lift-white:hover {
-    box-shadow: 6px 6px 0 var(--border);
-  }
+  /* ---------- Buttons ---------- */
 
   .btn-brutal {
     display: inline-flex;
@@ -263,12 +201,11 @@
     justify-content: center;
     gap: 0.5rem;
     border: 2px solid var(--border);
-    border-radius: 2px;
     padding: 0.85rem 1.15rem;
     font-family: var(--font-sans);
-    font-size: 0.85rem;
-    font-weight: 900;
-    letter-spacing: 0.02em;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--on-accent);
     transition:
@@ -277,11 +214,11 @@
   }
 
   .btn-brutal:hover {
-    transform: translate(-3px, -3px);
+    transform: translate(-2px, -2px);
   }
 
   .btn-brutal:active {
-    transform: translate(2px, 2px);
+    transform: translate(1px, 1px);
     box-shadow: 0 0 0 transparent !important;
   }
 
@@ -301,14 +238,6 @@
     box-shadow: 5px 5px 0 var(--border);
   }
 
-  .btn-blue {
-    background: var(--blue);
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  .btn-blue:hover {
-    box-shadow: 5px 5px 0 var(--border);
-  }
-
   .btn-surface {
     background: var(--surface);
     color: var(--fg);
@@ -318,30 +247,17 @@
     box-shadow: 5px 5px 0 var(--border);
   }
 
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    border: 2px solid var(--border);
-    border-radius: 2px;
-    padding: 0.28rem 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  /* ---------- Technical tokens ---------- */
 
   .chip-soft {
     display: inline-flex;
     align-items: center;
     border: 1px solid var(--line);
-    border-radius: 2px;
     padding: 0.28rem 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 600;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--muted);
   }
@@ -350,23 +266,26 @@
     display: inline-flex;
     align-items: center;
     border: 1px solid var(--border);
-    border-radius: 2px;
     padding: 0.28rem 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.66rem;
     font-weight: 700;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: var(--fg);
   }
 
-  .section-label {
+  /* Small monospace label above a value (metadata layer). */
+  .meta-label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.62rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    color: var(--muted);
   }
+
+  /* ---------- Typography ---------- */
 
   .display {
     font-family: var(--font-sans);
@@ -380,36 +299,19 @@
     text-shadow: 4px 4px 0 var(--pink);
   }
 
-  .hard-shadow-blue {
-    text-shadow: 4px 4px 0 var(--blue);
-  }
-
-  .hard-shadow-ink {
-    text-shadow: 3px 3px 0 var(--border);
-  }
-
   @media (min-width: 768px) {
     .hard-shadow-pink {
       text-shadow: 6px 6px 0 var(--pink);
     }
-    .hard-shadow-blue {
-      text-shadow: 6px 6px 0 var(--blue);
-    }
   }
+
+  /* ---------- State indicators ---------- */
 
   .status-dot {
     display: inline-block;
     width: 0.55rem;
     height: 0.55rem;
     background: var(--green);
-    border-radius: 1px;
-    animation: blink 1.2s steps(2, end) infinite;
-  }
-
-  @keyframes blink {
-    50% {
-      opacity: 0;
-    }
   }
 
   .live-dot {
@@ -426,78 +328,9 @@
     }
   }
 
-  .seg-group {
-    display: flex;
-    border: 2px solid var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .seg-btn {
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.5rem 0.7rem;
-    cursor: pointer;
-    transition:
-      background-color 0.15s ease,
-      color 0.15s ease;
-  }
-
-  .seg-btn + .seg-btn {
-    border-left: 2px solid var(--border);
-  }
-
-  .seg-btn:hover {
-    color: var(--fg);
-  }
-
-  .seg-btn[data-active="true"] {
-    background: var(--border);
-    color: var(--bg);
-  }
-
-  .seg-btn[data-active="true"]:hover {
-    color: var(--bg);
-  }
-
-  .case-banner {
-    aspect-ratio: 16 / 9;
-    border-bottom: 2px solid var(--border);
-    background-color: var(--bg);
-    display: flex;
-    align-items: flex-end;
-    padding: 1rem;
-  }
-
-  .case-banner-blue {
-    background-image: repeating-linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--blue) 22%, transparent) 0 10px,
-      transparent 10px 20px
-    );
-  }
-
-  .case-banner-pink {
-    background-image: repeating-linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--pink) 22%, transparent) 0 10px,
-      transparent 10px 20px
-    );
-  }
-
   .name-char {
     display: inline-block;
     will-change: transform, opacity;
-  }
-
-  .name-mask {
-    overflow: hidden;
   }
 
   .icon-btn {
@@ -506,7 +339,6 @@
     width: 2.25rem;
     height: 2.25rem;
     border: 2px solid var(--border);
-    border-radius: 2px;
     background: transparent;
     color: var(--fg);
     transition:
@@ -522,5 +354,210 @@
   .icon-btn:active {
     transform: translate(1px, 1px);
     box-shadow: 0 0 0 transparent;
+  }
+
+  /* ---------- Architecture diagram ----------
+     A three-column grid. Single nodes span all columns; connector rows draw
+     2px ink lines with pseudo-elements so no image or library is needed. */
+
+  .arch {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 0;
+    font-family: var(--font-mono);
+  }
+
+  .arch-span {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .arch-cell {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 0.2rem;
+  }
+
+  .arch-node {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    max-width: 100%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--fg);
+  }
+
+  .arch-node-hub {
+    border-width: 2px;
+    padding: 0.7rem 1.25rem;
+    font-size: 0.78rem;
+  }
+
+  .arch-node-sub {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--muted);
+  }
+
+  .arch-state {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-right: 0.45rem;
+    background: var(--green);
+    vertical-align: 0.05em;
+  }
+
+  /* Node tiers. Fills come from the site accents; ink text stays dark on
+     every fill in both themes, so the diagram reads identically in dark mode. */
+  .arch-node-external {
+    background: var(--pink);
+    color: var(--on-accent);
+  }
+
+  .arch-node-engine {
+    background: var(--green);
+    color: var(--on-accent);
+  }
+
+  .arch-node-state {
+    background: var(--yellow);
+    color: var(--on-accent);
+  }
+
+  .arch-node-product {
+    background: var(--border);
+    color: var(--bg);
+  }
+
+  .arch-node-external .arch-node-sub,
+  .arch-node-engine .arch-node-sub,
+  .arch-node-state .arch-node-sub,
+  .arch-node-product .arch-node-sub {
+    color: inherit;
+    opacity: 0.72;
+  }
+
+  .arch-node-engine .arch-state {
+    background: var(--on-accent);
+  }
+
+  /* Legend swatch shares the tier fills. */
+  .arch-swatch {
+    display: inline-block;
+    width: 0.7rem;
+    height: 0.7rem;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+  }
+
+  /* A vertical connector spanning all columns, centred. */
+  .arch-stub {
+    grid-column: 1 / -1;
+    position: relative;
+    height: 1.6rem;
+  }
+
+  .arch-stub::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--border);
+  }
+
+  .arch-stub-label {
+    position: absolute;
+    left: calc(50% + 0.6rem);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* Fan-out / fan-in: one cell per column. ::after is the vertical stub,
+     ::before is the horizontal bar segment. */
+  .arch-fan {
+    position: relative;
+    height: 1.4rem;
+  }
+
+  .arch-fan::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--border);
+  }
+
+  .arch-fan::before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    background: var(--border);
+  }
+
+  .arch-fan-out::before {
+    top: 0;
+  }
+
+  .arch-fan-in::before {
+    bottom: 0;
+  }
+
+  .arch-fan-l::before {
+    left: 50%;
+    right: 0;
+  }
+
+  .arch-fan-c::before {
+    left: 0;
+    right: 0;
+  }
+
+  .arch-fan-r::before {
+    left: 0;
+    right: 50%;
+  }
+
+  @media (max-width: 640px) {
+    .arch-node {
+      padding: 0.42rem 0.45rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+    }
+
+    .arch-node-hub {
+      padding: 0.55rem 0.85rem;
+      font-size: 0.68rem;
+    }
+
+    .arch-node-sub {
+      font-size: 0.54rem;
+    }
   }
 }
