@@ -1,4 +1,3 @@
-import { ModeProvider } from "@/components/ModeProvider";
 import { TopBar } from "@/components/TopBar";
 import { Hero } from "@/components/Hero";
 import { Work } from "@/components/Work";
@@ -9,7 +8,7 @@ import { Footer } from "@/components/Footer";
 
 export default function HomePage() {
   return (
-    <ModeProvider>
+    <>
       <a
         href="#work"
         className="sr-only font-mono text-xs focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:border-2 focus:border-border focus:bg-yellow focus:px-3 focus:py-2 focus:text-[#14120f]"
@@ -25,6 +24,6 @@ export default function HomePage() {
         <Contact />
         <Footer />
       </main>
-    </ModeProvider>
+    </>
   );
 }

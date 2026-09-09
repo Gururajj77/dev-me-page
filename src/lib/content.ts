@@ -10,7 +10,7 @@ export const site = {
     github: "https://github.com/Gururajj77",
     linkedin: "https://www.linkedin.com/in/jgururaj/",
     knotcms: "https://knotcms.com",
-    carbon: "https://carbondesignsystem.com",
+    knotcmsDocs: "https://docs.knotcms.com",
     resume: "/resume.pdf",
     email: "mailto:jdotgururaj@gmail.com",
     source: "https://github.com/Gururajj77/dev-me-page",
@@ -27,7 +27,7 @@ export const hero = {
   availabilityMeta:
     "Bengaluru or remote · UTC +05:30 · 60-day notice · I reply within a day",
   ctaPrimary: "Start a conversation",
-  ctaSecondary: "See two case studies",
+  ctaSecondary: "See the case study",
 } as const;
 
 export const heroStat = {
@@ -46,40 +46,7 @@ export const shipping = {
   lastShippedDetail: "knotcms · billing webhooks",
 } as const;
 
-export type Mode = "recruiter" | "engineer";
-
 export const caseStudies = [
-  {
-    id: "carbon",
-    dropLabel: "drop: component gallery + upgrade diff",
-    accent: "blue" as const,
-    title: "Carbon Design System",
-    meta: "IBM · Frontend developer · Feb 2024 — present",
-    summary:
-      "The shared UI platform every IBM product team builds on — and the documentation that decides whether they adopt it.",
-    recruiterPoints: [
-      {
-        label: "Scope",
-        text: "100+ consuming teams, 6 major upgrades landed with a written migration path each.",
-      },
-      {
-        label: "My part",
-        text: "owned four core components end to end, plus the docs site that made them adoptable without a support ticket.",
-      },
-    ],
-    engineerPoints: [
-      {
-        label: "Shape",
-        text: "Lit web components wrapped for React, tokens as the single source, Storybook as the contract, codemods for every breaking change.",
-      },
-      {
-        label: "Hard part",
-        text: "deprecating a prop across 40 repos without a coordinated release — solved with a dual-support window and a lint rule that failed loudly.",
-      },
-    ],
-    tags: ["React", "Lit", "TypeScript", "Storybook"],
-    href: "https://carbondesignsystem.com",
-  },
   {
     id: "knotcms",
     dropLabel: "drop: dashboard shot or 12s sync clip",
@@ -88,7 +55,7 @@ export const caseStudies = [
     meta: "Solo product · alongside IBM · since Jun 2026",
     summary:
       "Notion becomes a Framer CMS, kept in sync. A live product with paying users — auth, billing, webhooks and support are all mine.",
-    recruiterPoints: [
+    points: [
       {
         label: "Why it matters",
         text: "I have carried a product from idea to invoices, so I understand the cost of the decisions I ask platform teams to make.",
@@ -97,8 +64,6 @@ export const caseStudies = [
         label: "Running now",
         text: "self-service signup, subscription billing, and a sync that recovers itself when Notion rate-limits.",
       },
-    ],
-    engineerPoints: [
       {
         label: "Architecture",
         text: "event-driven Workers, D1 for state, KV for sync cursors, queues for retries, OAuth against Notion and Framer.",
@@ -110,6 +75,7 @@ export const caseStudies = [
     ],
     tags: ["TypeScript", "Workers", "D1", "KV"],
     href: "https://knotcms.com",
+    caseHref: "/work/knotcms",
   },
 ] as const;
 
@@ -206,4 +172,49 @@ export const contact = {
 
 export const changelog = {
   linkLabel: "design system",
+} as const;
+
+export const knotcmsCase = {
+  eyebrow: "Case study",
+  title: "KnotCMS",
+  tagline: "Notion becomes a Framer CMS, kept in sync.",
+  meta: "Solo product · alongside IBM · since Jun 2026",
+  stack: ["TypeScript", "Cloudflare Workers", "D1", "KV", "Queues"],
+  liveLabel: "Live product",
+  docsLabel: "Docs",
+  whatItDoes:
+    "Framer's CMS has no way to stay in sync with an external source of truth. Writers keep content in Notion, then copy it into Framer by hand every time it changes. KnotCMS connects a Notion database to a Framer collection, maps the fields once, and keeps them in sync from then on. Auth, billing, webhooks and support are all mine.",
+  constraint: {
+    lede: "Why this runs on Cloudflare Workers, and what that costs.",
+    body: 'Workers have hard per-request limits: CPU time, and a cap on outbound subrequests. A sync is fundamentally "read N rows from Notion, write N items to Framer", so the work scales with the user\'s table size while the runtime budget stays fixed. That tension is the whole engineering story.',
+    todo: "I need to write 2 to 3 sentences here about why I chose Workers anyway.",
+  },
+  whereItBroke: {
+    body: "Stress testing surfaced a failure at around 7,000 rows. The cause was subrequest fan-out: a single sync invocation issuing more outbound calls than a Worker invocation is allowed to make.",
+    todo: "What I actually saw when it failed, the error, the logs, how long it took me to find it.",
+  },
+  theFix: {
+    body: "Moved the sync off a single invocation and onto Cloudflare Queues, with batched invocations. Each batch stays inside the per-invocation limits, and the total sync size is no longer bounded by what one Worker can do in one request.",
+    todo: "Batch size, how retries and failures are handled, whether a partial batch failure re-runs the whole sync.",
+  },
+  numbers: {
+    columns: ["", "Tested up to", "Time at that size"],
+    rows: [
+      { label: "First sync", testedUpTo: "5,000 rows", time: "~3 min" },
+      {
+        label: "Auto sync",
+        testedUpTo: "3,000 rows per trigger",
+        time: "~3 min",
+      },
+    ],
+    note: "First sync pulls the full table, so it runs longer than an auto sync of the same size. Auto sync has a lower ceiling because it runs on the webhook path with a tighter budget.",
+  },
+  firstUser: {
+    body: "A real user hit a stuck point during setup, I diagnosed it and changed the docs rather than the code.",
+    todo: "What they got stuck on, what I changed.",
+  },
+  differently: {
+    todo: "2 to 3 honest points.",
+  },
+  closeLine: "Questions about this, or about what I could build for you.",
 } as const;
