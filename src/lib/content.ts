@@ -45,7 +45,7 @@ export const heroStat = {
   meta: "6 major upgrades · 0 unplanned breaking changes",
   secondary: [
     { value: "5,000+", label: "developers served" },
-    { value: "129K", label: "weekly npm consumers" },
+    { value: "73K", label: "weekly npm consumers" },
     { value: "85%", label: "test coverage · @carbon/react" },
     { value: "4", label: "core components owned end to end" },
   ],
@@ -188,7 +188,7 @@ export const experience: readonly ExperienceRecord[] = [
     ],
     metrics: [
       "5,000+ developers",
-      "129K weekly consumers",
+      "73K weekly consumers",
       "3,400+ implementations",
       "4 components owned",
     ],
@@ -479,4 +479,6 @@ export const knotcmsCaseSpec = {
   },
 } as const;
 
-export type ChainTone = (typeof knotcmsCaseSpec.before)[number]["tone"] | (typeof knotcmsCaseSpec.after)[number]["tone"];
+export type ChainTone =
+  | (typeof knotcmsCaseSpec.before)[number]["tone"]
+  | (typeof knotcmsCaseSpec.after)[number]["tone"];
