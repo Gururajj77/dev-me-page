@@ -3,53 +3,92 @@
 @theme {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
+  --color-soft: var(--soft);
   --color-border: var(--border);
   --color-line: var(--line);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
+  --color-accent: var(--accent);
   --color-green: var(--green);
   --color-yellow: var(--yellow);
   --color-pink: var(--pink);
 
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --color-t-red: var(--t-red);
+  --color-t-pink: var(--t-pink);
+  --color-t-blue: var(--t-blue);
+  --color-t-green: var(--t-green);
+  --color-t-yellow: var(--t-yellow);
+  --color-t-violet: var(--t-violet);
+
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, Menlo, monospace;
 }
 
 /*
-  Design tokens.
-  `--border` / `--line` are the historical names; `--ink` / `--rule` are the
-  spec's names and alias them so either vocabulary works in CSS.
+  Design tokens — "Tiles": a soft grey ground, white and pastel tiles,
+  ink text, one orange accent and one green for live state.
+  `--border` is ink (kept for older markup); hairlines use `--line`.
+  `--pink` is kept as an alias of the accent so existing `text-pink` reads
+  as the accent colour.
 */
 :root,
 [data-theme="light"] {
-  --bg: #f3f0e7;
-  --surface: #f8f6ef;
-  --border: #111111;
-  --line: #d8d4c9;
-  --fg: #111111;
-  --muted: #66635c;
-  --green: #00c982;
-  --yellow: #ffc400;
-  --pink: #ff4f9a;
-  --on-accent: #111111;
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --soft: #eef0f3;
+  --border: #141519;
+  --line: #e5e6ea;
+  --fg: #141519;
+  --muted: #62656f;
+  --accent: #e8431f;
+  --green: #138a4f;
+  --yellow: #ffd23f;
+  --pink: var(--accent);
+  --on-accent: #141519;
+
+  --t-red: #ffe8e3;
+  --t-pink: #fde7f3;
+  --t-blue: #e4eeff;
+  --t-green: #e2f6ea;
+  --t-yellow: #fff4cf;
+  --t-violet: #eee9ff;
+
+  --tile-shadow:
+    0 1px 2px rgba(20, 21, 25, 0.06), 0 4px 8px rgba(20, 21, 25, 0.05),
+    0 12px 24px rgba(20, 21, 25, 0.06);
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --bg: #0a0a0b;
-  --surface: #121214;
-  --border: #f2f2f0;
-  --line: #2e2e2c;
-  --fg: #f2f2f0;
-  --muted: #9a9aa3;
-  --green: #00e585;
+  --bg: #0c0d10;
+  --surface: #16171c;
+  --soft: #1d1f25;
+  --border: #f2f2f4;
+  --line: #24262d;
+  --fg: #f2f2f4;
+  --muted: #9a9daa;
+  --accent: #ff7452;
+  --green: #2bd27e;
   --yellow: #ffd60a;
-  --pink: #ff5ca8;
-  --on-accent: #0a0a0b;
+  --on-accent: #141519;
+
+  --t-red: #2a1712;
+  --t-pink: #2a1522;
+  --t-blue: #121b2e;
+  --t-green: #10231a;
+  --t-yellow: #2a2410;
+  --t-violet: #1b1730;
+
+  --tile-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
 }
 
 :root {
   --ink: var(--border);
   --rule: var(--line);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @layer base {
@@ -84,17 +123,17 @@
     font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.65;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
     background: var(--yellow);
-    color: #111111;
+    color: #141519;
   }
 
   :focus-visible {
-    outline: 2px solid var(--green);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
 
@@ -110,8 +149,7 @@
       background-color 0.3s ease,
       color 0.3s ease,
       border-color 0.3s ease,
-      box-shadow 0.3s ease,
-      text-shadow 0.3s ease !important;
+      box-shadow 0.3s ease !important;
   }
 
   /* Circular wipe from the theme toggle */
@@ -152,135 +190,176 @@
 
   .shell {
     width: 100%;
-    max-width: 1320px;
+    max-width: 1240px;
     margin-inline: auto;
-    padding-inline: 1rem;
+    padding-inline: 16px;
     box-sizing: border-box;
   }
 
   @media (min-width: 768px) {
     .shell {
-      padding-inline: 2rem;
+      padding-inline: 32px;
     }
   }
 
-  /* ---------- Containers ---------- */
+  /* ---------- Tiles ---------- */
 
-  /* Primary container: 2px ink border, no radius, no resting shadow. */
+  /* The base card: white surface, hairline, generous radius. */
   .tile {
-    border: 2px solid var(--border);
-    background: transparent;
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--surface);
   }
 
   .tile-surface {
     background: var(--surface);
   }
 
-  /* Opt-in lift for small interactive tiles only. */
+  /* Pastel tones drop the hairline; the fill is the edge. */
+  .tone-red,
+  .tone-pink,
+  .tone-blue,
+  .tone-green,
+  .tone-yellow,
+  .tone-violet {
+    border-color: transparent;
+  }
+  .tone-red {
+    background: var(--t-red);
+  }
+  .tone-pink {
+    background: var(--t-pink);
+  }
+  .tone-blue {
+    background: var(--t-blue);
+  }
+  .tone-green {
+    background: var(--t-green);
+  }
+  .tone-yellow {
+    background: var(--t-yellow);
+  }
+  .tone-violet {
+    background: var(--t-violet);
+  }
+
+  /* Lift for tiles that are links. */
   .tile-lift {
     transition:
-      transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
-      box-shadow 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform 0.25s var(--ease),
+      box-shadow 0.25s var(--ease);
   }
 
   .tile-lift:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--border);
+    transform: translateY(-3px);
+    box-shadow: var(--tile-shadow);
   }
 
   .tile-lift:active {
-    transform: translate(0, 0);
-    box-shadow: 0 0 0 var(--border);
+    transform: translateY(0) scale(0.99);
+  }
+
+  /* Staggered entrance. `--i` is the tile's index. */
+  .tile-in {
+    animation: tile-in 0.6s var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 40ms);
+  }
+
+  @keyframes tile-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Square icon badge in a tile's top row. */
+  .tile-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    flex: none;
+    border-radius: 12px;
+    color: #ffffff;
   }
 
   /* ---------- Buttons ---------- */
 
-  .btn-brutal {
+  .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    border: 2px solid var(--border);
-    padding: 0.85rem 1.15rem;
+    gap: 8px;
+    min-height: 44px;
+    padding-inline: 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
     font-family: var(--font-sans);
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--on-accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
     transition:
-      transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1),
-      box-shadow 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform 0.2s var(--ease),
+      box-shadow 0.2s var(--ease),
+      background-color 0.2s var(--ease);
   }
 
-  .btn-brutal:hover {
-    transform: translate(-2px, -2px);
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--tile-shadow);
   }
 
-  .btn-brutal:active {
-    transform: translate(1px, 1px);
-    box-shadow: 0 0 0 transparent !important;
+  .btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: none;
   }
 
-  .btn-green {
-    background: var(--green);
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  .btn-green:hover {
-    box-shadow: 5px 5px 0 var(--border);
+  .btn-ink {
+    background: var(--fg);
+    color: var(--bg);
   }
 
-  .btn-yellow {
-    background: var(--yellow);
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  .btn-yellow:hover {
-    box-shadow: 5px 5px 0 var(--border);
-  }
-
-  .btn-surface {
+  .btn-outline {
     background: var(--surface);
+    border-color: var(--line);
     color: var(--fg);
-    box-shadow: 3px 3px 0 var(--border);
-  }
-  .btn-surface:hover {
-    box-shadow: 5px 5px 0 var(--border);
   }
 
   /* ---------- Technical tokens ---------- */
 
-  .chip-soft {
+  .chip-soft,
+  .chip-strong {
     display: inline-flex;
     align-items: center;
+    gap: 8px;
     border: 1px solid var(--line);
-    padding: 0.28rem 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    border-radius: 999px;
+    background: var(--surface);
+    padding: 8px 12px;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
     color: var(--muted);
   }
 
   .chip-strong {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--border);
-    padding: 0.28rem 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
     color: var(--fg);
   }
 
   /* Small monospace label above a value (metadata layer). */
   .meta-label {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
     text-transform: uppercase;
     color: var(--muted);
   }
@@ -288,30 +367,31 @@
   /* ---------- Typography ---------- */
 
   .display {
-    font-family: var(--font-sans);
+    font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 0.92;
-    text-transform: uppercase;
+    letter-spacing: -0.035em;
+    line-height: 1;
   }
 
-  .hard-shadow-pink {
-    text-shadow: 4px 4px 0 var(--pink);
-  }
-
-  @media (min-width: 768px) {
-    .hard-shadow-pink {
-      text-shadow: 6px 6px 0 var(--pink);
-    }
+  /* Accent marker under a phrase. */
+  .mark {
+    background-image: linear-gradient(
+      transparent 62%,
+      color-mix(in srgb, var(--accent) 28%, transparent) 62%
+    );
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 
   /* ---------- State indicators ---------- */
 
   .status-dot {
     display: inline-block;
-    width: 0.55rem;
-    height: 0.55rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
     background: var(--green);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 22%, transparent);
   }
 
   .live-dot {
@@ -328,37 +408,34 @@
     }
   }
 
-  .name-char {
-    display: inline-block;
-    will-change: transform, opacity;
-  }
-
   .icon-btn {
     display: grid;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 2px solid var(--border);
-    background: transparent;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
     color: var(--fg);
     transition:
-      transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1),
-      box-shadow 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
   }
 
   .icon-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 2px 2px 0 var(--border);
+    transform: translateY(-1px);
+    box-shadow: var(--tile-shadow);
   }
 
   .icon-btn:active {
-    transform: translate(1px, 1px);
-    box-shadow: 0 0 0 transparent;
+    transform: translateY(0) scale(0.96);
+    box-shadow: none;
   }
 
   /* ---------- Architecture diagram ----------
      A three-column grid. Single nodes span all columns; connector rows draw
-     2px ink lines with pseudo-elements so no image or library is needed. */
+     lines with pseudo-elements so no image or library is needed. */
 
   .arch {
     display: grid;
@@ -378,21 +455,22 @@
     display: flex;
     justify-content: center;
     min-width: 0;
-    padding-inline: 0.2rem;
+    padding-inline: 4px;
   }
 
   .arch-node {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.2rem;
+    gap: 4px;
     max-width: 100%;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
+    border-radius: 12px;
     background: var(--surface);
-    padding: 0.6rem 0.9rem;
+    padding: 8px 12px;
     font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     line-height: 1.2;
     text-transform: uppercase;
     text-align: center;
@@ -401,80 +479,74 @@
 
   /* Rank: hub (ends of the primary path), mid (primary path), minor (support). */
   .arch-node-hub {
-    border-width: 2px;
-    padding: 0.9rem 1.5rem;
+    border-radius: 16px;
+    padding: 16px 32px;
     font-size: 0.92rem;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
   }
 
   .arch-node-mid {
-    border-width: 2px;
-    padding: 0.75rem 1.15rem;
+    padding: 12px 16px;
     font-size: 0.78rem;
   }
 
   .arch-node-sub {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
     font-weight: 500;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     text-transform: none;
     color: var(--muted);
   }
 
   .arch-node-hub .arch-node-sub {
-    font-size: 0.66rem;
+    font-size: 0.68rem;
   }
 
   .arch-state {
     display: inline-block;
-    width: 0.45rem;
-    height: 0.45rem;
-    margin-right: 0.45rem;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 999px;
     background: var(--green);
     vertical-align: 0.05em;
   }
 
-  /* Node tiers. Fills come from the site accents; ink text stays dark on
-     every fill in both themes, so the diagram reads identically in dark mode. */
+  /* Node tiers use the pastel tile fills; text stays `--fg` in both themes. */
   .arch-node-external {
-    background: var(--pink);
-    color: var(--on-accent);
+    border-color: transparent;
+    background: var(--t-pink);
   }
 
   .arch-node-engine {
-    background: var(--green);
-    color: var(--on-accent);
+    border-color: transparent;
+    background: var(--t-green);
   }
 
   .arch-node-state {
-    background: var(--yellow);
-    color: var(--on-accent);
+    border-color: transparent;
+    background: var(--t-yellow);
   }
 
   .arch-node-product {
-    background: var(--border);
+    border-color: transparent;
+    background: var(--fg);
     color: var(--bg);
   }
 
-  .arch-node-external .arch-node-sub,
-  .arch-node-engine .arch-node-sub,
-  .arch-node-state .arch-node-sub,
   .arch-node-product .arch-node-sub {
     color: inherit;
     opacity: 0.72;
   }
 
-  .arch-node-engine .arch-state {
-    background: var(--on-accent);
-  }
-
   /* Legend swatch shares the tier fills. */
   .arch-swatch {
     display: inline-block;
-    width: 0.7rem;
-    height: 0.7rem;
+    width: 12px;
+    height: 12px;
     flex-shrink: 0;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
+    border-radius: 4px;
   }
 
   /* A vertical connector spanning all columns, centred. */
@@ -484,26 +556,26 @@
     height: 2.25rem;
   }
 
-  /* The centre column is the primary path: 3px against 2px elsewhere. */
+  /* The centre column is the primary path: 2px against 1px elsewhere. */
   .arch-stub::before {
     content: "";
     position: absolute;
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 3px;
-    margin-left: -1.5px;
-    background: var(--border);
+    width: 2px;
+    margin-left: -1px;
+    background: var(--muted);
   }
 
   .arch-stub-label {
     position: absolute;
-    left: calc(50% + 0.6rem);
+    left: calc(50% + 12px);
     top: 50%;
     transform: translateY(-50%);
-    font-size: 0.6rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
     white-space: nowrap;
@@ -522,16 +594,15 @@
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 2px;
-    margin-left: -1px;
-    background: var(--border);
+    width: 1px;
+    background: var(--muted);
   }
 
   .arch-fan::before {
     content: "";
     position: absolute;
-    height: 2px;
-    background: var(--border);
+    height: 1px;
+    background: var(--muted);
   }
 
   .arch-fan-out::before {
@@ -553,8 +624,8 @@
   }
 
   .arch-fan-c::after {
-    width: 3px;
-    margin-left: -1.5px;
+    width: 2px;
+    margin-left: -1px;
   }
 
   .arch-fan-r::before {
@@ -564,24 +635,24 @@
 
   @media (max-width: 640px) {
     .arch-node {
-      padding: 0.5rem 0.5rem;
+      padding: 8px;
       font-size: 0.62rem;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
     }
 
     .arch-node-hub {
-      padding: 0.7rem 1rem;
+      padding: 12px 16px;
       font-size: 0.78rem;
     }
 
     .arch-node-mid {
-      padding: 0.6rem 0.75rem;
+      padding: 8px 12px;
       font-size: 0.68rem;
     }
 
     .arch-node-sub,
     .arch-node-hub .arch-node-sub {
-      font-size: 0.56rem;
+      font-size: 0.58rem;
     }
 
     .arch-stub {

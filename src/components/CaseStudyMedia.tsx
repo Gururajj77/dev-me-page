@@ -53,7 +53,7 @@ export function CaseStudyMedia({
       ) : null}
 
       <div
-        className={`relative w-full overflow-hidden border-2 border-border bg-bg ${aspectClass[aspect]}`}
+        className={`relative w-full overflow-hidden rounded-2xl border border-line bg-bg ${aspectClass[aspect]}`}
       >
         {exists ? (
           <Image src={src} alt={alt} fill className="object-cover" sizes="(min-width: 1320px) 1256px, 100vw" />

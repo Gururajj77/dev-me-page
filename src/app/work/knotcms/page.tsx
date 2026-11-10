@@ -43,7 +43,7 @@ function CaseSection({
         id={id}
         data-pop
         aria-labelledby={`${id}-title`}
-        className="flex scroll-mt-6 flex-col gap-8 border-t-2 border-border pt-6 md:gap-10"
+        className="flex scroll-mt-6 flex-col gap-8 border-t border-line pt-6 md:gap-10"
       >
         <div className="flex flex-col gap-3">
           <p className="font-mono text-[0.66rem] font-bold tracking-[0.16em] uppercase">
@@ -136,7 +136,7 @@ function StepPanel({
           >
             <span className="meta-label flex items-center gap-1.5">
               {outcomeLast && last ? (
-                <span className="size-1.5 bg-green" aria-hidden />
+                <span className="size-1.5 rounded-full bg-green" aria-hidden />
               ) : null}
               {step.label}
             </span>
@@ -193,7 +193,7 @@ function FactGrid({
             }`}
           >
             {item.live ? (
-              <span className="live-dot size-1.5 bg-green" aria-hidden />
+              <span className="live-dot size-1.5 rounded-full bg-green" aria-hidden />
             ) : null}
             {item.value}
           </dd>
@@ -230,7 +230,7 @@ export default function KnotCmsCaseStudyPage() {
           <div className="grid gap-10 p-6 sm:p-9 lg:grid-cols-[1.35fr_1fr] lg:gap-12 lg:p-12">
             <div className="flex flex-col gap-7">
               <div className="flex flex-col gap-4">
-                <h1 className="display hard-shadow-pink text-[clamp(3rem,9vw,6.25rem)]">
+                <h1 className="display text-[clamp(3rem,9vw,6.25rem)]">
                   {knotcmsCase.title}
                 </h1>
                 <p className="display text-[clamp(1.35rem,2.6vw,2.1rem)] text-muted">
@@ -255,7 +255,7 @@ export default function KnotCmsCaseStudyPage() {
                   href={site.links.knotcms}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-brutal btn-green"
+                  className="btn btn-ink"
                 >
                   {knotcmsCase.liveLabel}
                   <FiArrowUpRight className="size-4" aria-hidden />
@@ -264,7 +264,7 @@ export default function KnotCmsCaseStudyPage() {
                   href={site.links.knotcmsDocs}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-brutal btn-surface"
+                  className="btn btn-outline"
                 >
                   {knotcmsCase.docsLabel}
                   <FiArrowUpRight className="size-4" aria-hidden />
@@ -289,7 +289,7 @@ export default function KnotCmsCaseStudyPage() {
         <nav
           data-pop
           aria-label="Case study index"
-          className="border-y-2 border-border py-3.5"
+          className="border-y border-line py-3.5"
         >
           <ol className="flex flex-wrap gap-x-6 gap-y-2">
             {spec.index.map((item) => (
@@ -374,7 +374,7 @@ export default function KnotCmsCaseStudyPage() {
         title="Event-driven Workers"
       >
         <div className="grid gap-5 lg:grid-cols-[55fr_45fr]">
-          <div className="flex flex-col gap-6 border-2 border-border bg-bg p-6 sm:p-8">
+          <div className="flex flex-col gap-6 rounded-2xl border border-line bg-bg p-6 sm:p-8">
             <div className="flex items-center justify-between gap-3">
               <p className="meta-label text-fg">System diagram</p>
               <p className="font-mono text-[0.58rem] tracking-[0.08em] text-muted uppercase">
@@ -415,7 +415,7 @@ export default function KnotCmsCaseStudyPage() {
             </p>
             <p className={prose}>{knotcmsCase.constraint.body}</p>
           </div>
-          <aside className="flex h-fit flex-col gap-4 border-2 border-border p-6 sm:p-7">
+          <aside className="flex h-fit flex-col gap-4 rounded-2xl border border-line p-6 sm:p-7">
             <p className="meta-label text-fg">{spec.whyWorkersLabel}</p>
             <p className="text-[0.98rem] leading-[1.7]">
               {knotcmsCase.constraint.why}
@@ -435,7 +435,7 @@ export default function KnotCmsCaseStudyPage() {
               {spec.failure.sub}
             </p>
           </div>
-          <div className="border-t-2 border-border p-5 sm:p-7">
+          <div className="border-t border-line p-5 sm:p-7">
             <StepPanel steps={spec.failure.sequence} columns={3} sentence />
           </div>
         </div>
@@ -506,7 +506,7 @@ export default function KnotCmsCaseStudyPage() {
         <div className="tile tile-surface overflow-x-auto p-6 sm:p-8">
           <table className="w-full border-collapse font-mono text-[0.95rem]">
             <thead>
-              <tr className="border-b-2 border-border">
+              <tr className="border-b border-line">
                 {knotcmsCase.numbers.columns.map((col, i) => (
                   <th
                     key={col || `col-${i}`}
@@ -598,12 +598,12 @@ export default function KnotCmsCaseStudyPage() {
       <PopIn>
         <div
           data-pop
-          className="flex flex-wrap items-center justify-between gap-5 border-t-2 border-border pt-7"
+          className="flex flex-wrap items-center justify-between gap-5 border-t border-line pt-7"
         >
           <p className="max-w-[44ch] text-[1.05rem] leading-relaxed text-muted">
             {knotcmsCase.closeLine}
           </p>
-          <Link href="/#contact" className="btn-brutal btn-green">
+          <Link href="/#contact" className="btn btn-ink">
             Start a conversation
             <FiArrowRight className="size-4" aria-hidden />
           </Link>
