@@ -19,6 +19,8 @@
   --color-t-green: var(--t-green);
   --color-t-yellow: var(--t-yellow);
   --color-t-violet: var(--t-violet);
+  --color-ink-blue: var(--ink-blue);
+  --color-pill-blue: var(--pill-blue);
 
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
@@ -53,6 +55,9 @@
   --t-green: #e2f6ea;
   --t-yellow: #fff4cf;
   --t-violet: #eee9ff;
+  /* Text on --t-blue: same hue, ~6:1 contrast. Marks Carbon/IBM evidence. */
+  --ink-blue: #1f4fbf;
+  --pill-blue: var(--t-blue);
 
   --tile-shadow:
     0 1px 2px rgba(20, 21, 25, 0.06), 0 4px 8px rgba(20, 21, 25, 0.05),
@@ -79,6 +84,9 @@
   --t-green: #10231a;
   --t-yellow: #2a2410;
   --t-violet: #1b1730;
+  /* Blue evidence pill: lifted off the dark surface, ~8:1 text contrast. */
+  --ink-blue: #a8c8ff;
+  --pill-blue: #1e2c4a;
 
   --tile-shadow:
     0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);

@@ -199,19 +199,18 @@ function ExperienceTile({ index }: { index: number }) {
               </ul>
 
               {job.highlights?.length ? (
-                <ul className="flex flex-col rounded-2xl bg-soft">
+                <ul className="flex flex-col gap-4 border-t border-line pt-4">
                   {job.highlights.map((item) => (
-                    <li
-                      key={item.label}
-                      className="flex flex-col border-t border-line px-3 py-2 first:border-t-0"
-                    >
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                        <h4 className="meta-label">{item.label}</h4>
-                        <p className="font-mono text-[0.72rem] leading-[1.3] font-medium whitespace-nowrap text-fg">
+                    <li key={item.label} className="flex flex-col">
+                      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+                        <h4 className="text-[0.92rem] leading-[1.4] font-semibold text-fg">
+                          {item.label}
+                        </h4>
+                        <p className="rounded-full bg-pill-blue px-2 text-[0.75rem] leading-[1.6] font-semibold whitespace-nowrap text-ink-blue tabular-nums">
                           {item.stat}
                         </p>
                       </div>
-                      <p className="text-[0.8rem] leading-[1.45] text-pretty text-muted">
+                      <p className="text-[0.85rem] leading-[1.5] text-pretty text-muted">
                         {item.text}
                       </p>
                     </li>

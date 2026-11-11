@@ -131,10 +131,10 @@ export const caseStudies: readonly CaseStudy[] = [
       },
     ],
     failure: [
-      { label: "Problem", text: "5,000 rows" },
+      { label: "Problem", text: "7,000 rows" },
       { label: "Diagnosis", text: "Workers subrequest fan-out failure" },
       { label: "Change", text: "Moved the sync out of the request path" },
-      // TODO(gururaj): add the verified row count once retested above 5,000.
+      // TODO(gururaj): add the verified row count once retested above 7,000.
       {
         label: "Outcome",
         text: "Rebuilt the sync pipeline on Queues with batched invocations",
@@ -223,36 +223,36 @@ export const experience: readonly ExperienceRecord[] = [
     highlights: [
       {
         label: "Agent-readable docs",
-        stat: "any page → .md",
-        text: "Served as markdown via a .md suffix or Accept: text/markdown. Main data source for the team's MCP search server.",
+        stat: "Any page → .md",
+        text: "Docs served as markdown via .md or Accept: text/markdown. Feeds the team's MCP search server.",
         detail:
           "Built AI-agent support for the Carbon docs: any page is served as markdown through a .md URL suffix or Accept: text/markdown content negotiation. The site's content is also the main data source for the team's MCP search server.",
       },
       {
         label: "Docs search",
-        stat: "SSR · URL-based",
-        text: "Built end to end for SEO and fewer client API calls, with keyword tracking in Amplitude and Segment.",
+        stat: "SSR, URL-based",
+        text: "Built end to end. Better SEO, fewer client API calls, keywords tracked in Amplitude and Segment.",
         detail:
           "Built the docs search frontend end to end: server-rendered and URL-based for SEO and fewer client API calls, with keyword tracking through Amplitude and Segment.",
       },
       {
         label: "Launch safety",
         stat: "0 broken redirects",
-        text: "Oct 1 GA cutover: ~400 legacy URLs verified with Playwright, bulk redirects shipped from CSV via Cloudflare.",
+        text: "~400 legacy URLs verified with Playwright for the Oct 1 GA cutover.",
         detail:
           "Owned the redirect strategy for the Oct 1 GA cutover. Verified about 400 legacy URLs with Playwright and set up the Cloudflare bulk-redirect workflow from CSV to production, with zero broken redirects at launch.",
       },
       {
         label: "Accessibility",
         stat: "~100 components",
-        text: "Statuses read straight from Playwright output, removing nearly all manual CMS updates. SSO-gated IBM-only data.",
+        text: "Statuses read from Playwright output, removing nearly all manual CMS updates.",
         detail:
           "Automated accessibility statuses for about 100 components, read directly from Playwright output in each Carbon package, removing nearly all manual CMS updates. Added edit restrictions and SSO gating for IBM-only data.",
       },
       {
         label: "CI reliability",
         stat: "2 min → <30s",
-        text: "Rescoped a GitHub Actions cache to Next.js build inputs. Failing PRs dropped from ~80% to under 10%.",
+        text: "Rescoped a GitHub Actions cache. Failing PRs fell from ~80% to under 10%.",
         detail:
           "Traced CI failures to a GitHub Actions cache keyed on the whole runner filesystem. Rescoped it to Next.js build inputs, cutting the step from over 2 minutes to under 30 seconds and failing PRs from about 80% to under 10%.",
       },
@@ -362,12 +362,12 @@ export const knotcmsCase = {
     why: "I chose Workers because the constraint pushed me toward the architecture I'd have needed anyway. A cap on subrequests forces you to batch and queue, and batching gives you retries, resumability and backpressure as a side effect rather than as a later rewrite. The alternative, one long-running process on a container that bills by the hour, would have looked simpler on day one and left me with a sync that fails silently at row 4,000.",
   },
   whereItBroke: {
-    body: "Stress testing surfaced a failure at around 5,000 rows. The cause was subrequest fan-out: a single sync invocation issuing more outbound calls than a Worker invocation is allowed to make.",
+    body: "Stress testing surfaced a failure at around 7,000 rows. The cause was subrequest fan-out: a single sync invocation issuing more outbound calls than a Worker invocation is allowed to make.",
     seen: "What I actually saw was not much. The Cloudflare dashboard showed the requests failing with a CPU limit exceeded error and nothing more specific than that. The error named the limit, not the fan-out behind it.",
   },
   theFix: {
     body: "Moved the sync out of the webhook request and onto Cloudflare Queues. The handler now verifies the signature, records the event, drops one message and returns in milliseconds, so Notion gets its 200 immediately. A consumer picks the message up in its own invocation with a 15-minute wall-clock budget instead of an HTTP request's, plus retries. A message is one project, not a chunk of rows: the consumer waits out the ten-second quiet window, then pages the Notion database 100 rows at a time and writes to Framer in one remove and one add. The bound moved from an HTTP request to an invocation; it didn't disappear.",
-    // TODO(gururaj): add the verified row count once retested above 5,000.
+    // TODO(gururaj): add the verified row count once retested above 7,000.
     subsections: [
       {
         title: "Collapsing bursts, at both ends",
@@ -407,7 +407,7 @@ export const knotcmsCase = {
   },
   numbers: {
     columns: ["", "Tested up to", "Time at that size"],
-    // TODO(gururaj): add the verified row count once retested above 5,000.
+    // TODO(gururaj): add the verified row count once retested above 7,000.
     // The first-sync row was removed: its tested size contradicted the failure story.
     rows: [
       {
@@ -439,7 +439,7 @@ export const knotcmsCase = {
       },
       {
         title: "Instrument the sync before stress testing it",
-        body: "When the 5,000-row sync failed, the dashboard told me a limit had been exceeded and nothing else. I had to work out the fan-out from first principles. A sync that logs rows read, subrequests made and time spent would have named the problem in one line. The lock TTL was the same mistake in miniature: I set it to three minutes because it sounded reasonable, and a large sync takes about that long. Limits should come from measured numbers, not round ones.",
+        body: "When the 7,000-row sync failed, the dashboard told me a limit had been exceeded and nothing else. I had to work out the fan-out from first principles. A sync that logs rows read, subrequests made and time spent would have named the problem in one line. The lock TTL was the same mistake in miniature: I set it to three minutes because it sounded reasonable, and a large sync takes about that long. Limits should come from measured numbers, not round ones.",
       },
     ],
   },
@@ -496,7 +496,7 @@ export const knotcmsCaseSpec = {
   ],
   whyWorkersLabel: "Decision — why Workers",
   failure: {
-    headline: "5,000 rows",
+    headline: "7,000 rows",
     sub: "Workers subrequest fan-out failure",
     sequence: [
       {
@@ -509,7 +509,7 @@ export const knotcmsCaseSpec = {
       },
       {
         label: "Impact",
-        text: "Stress testing surfaced the failure at around 5,000 rows. The error named the limit, not the fan-out behind it.",
+        text: "Stress testing surfaced the failure at around 7,000 rows. The error named the limit, not the fan-out behind it.",
       },
     ],
   },
@@ -530,7 +530,7 @@ export const knotcmsCaseSpec = {
     { label: "Decision", text: "Move sync work out of request fan-out" },
     { label: "Constraint", text: "Workers subrequest limit" },
     { label: "Change", text: "Webhook enqueues, a consumer runs the sync" },
-    // TODO(gururaj): add the verified row count once retested above 5,000.
+    // TODO(gururaj): add the verified row count once retested above 7,000.
     {
       label: "Outcome",
       text: "Rebuilt the sync pipeline on Queues with batched invocations",

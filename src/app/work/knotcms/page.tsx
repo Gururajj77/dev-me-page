@@ -9,7 +9,7 @@ import { PopIn } from "@/components/PopIn";
 
 const pageTitle = `${knotcmsCase.title} case study — ${site.name}`;
 const pageDescription =
-  "How I built and run KnotCMS solo: a Notion to Framer CMS sync on Cloudflare Workers, where it broke at 5,000 rows, how I rebuilt it on Queues, and what the first paying customer taught me.";
+  "How I built and run KnotCMS solo: a Notion to Framer CMS sync on Cloudflare Workers, where it broke at 7,000 rows, how I rebuilt it on Queues, and what the first paying customer taught me.";
 
 export const metadata: Metadata = {
   title: pageTitle,

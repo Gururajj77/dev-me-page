@@ -33,7 +33,7 @@ export const markdownPages = [
     path: "/work/knotcms",
     md: "/work/knotcms.md",
     summary:
-      "Solo SaaS on Cloudflare Workers: architecture, the 5,000-row failure, the Queues rebuild, traction and lessons.",
+      "Solo SaaS on Cloudflare Workers: architecture, the 7,000-row failure, the Queues rebuild, traction and lessons.",
   },
 ] as const;
 

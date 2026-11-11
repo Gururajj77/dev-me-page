@@ -19,11 +19,27 @@ type ThemeContextValue = {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+/**
+ * Dark is the default. Only an explicit toggle is remembered, under a new key:
+ * the old "theme" key was written on every visit, so it can't tell a real
+ * choice from the old light default.
+ */
+const STORAGE_KEY = "theme-choice";
+const DEFAULT_THEME: Theme = "dark";
+
 function getInitialTheme(): Theme {
-  if (typeof window === "undefined") return "light";
-  const stored = window.localStorage.getItem("theme");
-  if (stored === "light" || stored === "dark") return stored;
-  return "light";
+  if (typeof window === "undefined") return DEFAULT_THEME;
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {}
+  return DEFAULT_THEME;
+}
+
+function saveChoice(theme: Theme) {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, theme);
+  } catch {}
 }
 
 function prefersReducedMotion(): boolean {
@@ -31,21 +47,13 @@ function prefersReducedMotion(): boolean {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [ready, setReady] = useState(false);
+  const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
 
   useEffect(() => {
     const initial = getInitialTheme();
     setTheme(initial);
     document.documentElement.dataset.theme = initial;
-    setReady(true);
   }, []);
-
-  useEffect(() => {
-    if (!ready) return;
-    document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem("theme", theme);
-  }, [theme, ready]);
 
   const toggle = useCallback((event?: MouseEvent<HTMLElement>) => {
     const next: Theme = theme === "light" ? "dark" : "light";
@@ -53,7 +61,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const apply = () => {
       setTheme(next);
       document.documentElement.dataset.theme = next;
-      window.localStorage.setItem("theme", next);
+      saveChoice(next);
     };
 
     const reduced = prefersReducedMotion();

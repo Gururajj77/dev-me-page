@@ -63,13 +63,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="dark"
       className={`${bricolage.variable} ${instrument.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:'light';}catch(e){}})();`,
+            // Dark by default; only an explicit toggle choice (theme-choice) overrides it.
+            __html: `(function(){try{var t=localStorage.getItem('theme-choice');document.documentElement.dataset.theme=(t==='light'||t==='dark')?t:'dark';}catch(e){}})();`,
           }}
         />
         <script
