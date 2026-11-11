@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import { Bento } from "@/components/bento/Bento";
 import { Profile } from "@/components/bento/Profile";
 import { site } from "@/lib/content";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+    types: { "text/markdown": "/index.md" },
+  },
+  openGraph: {
+    title: site.title,
+    description: site.description,
+    url: "/",
+    siteName: site.brand,
+    type: "profile",
+  },
+};
 
 export default function HomePage() {
   return (

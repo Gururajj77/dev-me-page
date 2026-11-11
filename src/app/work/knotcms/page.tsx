@@ -7,15 +7,78 @@ import { CaseStudyMedia } from "@/components/CaseStudyMedia";
 import { KnotcmsArchitecture } from "@/components/KnotcmsArchitecture";
 import { PopIn } from "@/components/PopIn";
 
+const pageTitle = `${knotcmsCase.title} case study — ${site.name}`;
+const pageDescription =
+  "How I built and run KnotCMS solo: a Notion to Framer CMS sync on Cloudflare Workers, where it broke at 5,000 rows, how I rebuilt it on Queues, and what the first paying customer taught me.";
+
 export const metadata: Metadata = {
-  title: `${knotcmsCase.title} — ${site.name}`,
-  description: knotcmsCase.tagline,
+  title: pageTitle,
+  description: pageDescription,
+  alternates: {
+    canonical: "/work/knotcms",
+    types: { "text/markdown": "/work/knotcms.md" },
+  },
   openGraph: {
-    title: `${knotcmsCase.title} — ${site.name}`,
-    description: knotcmsCase.tagline,
+    title: pageTitle,
+    description: pageDescription,
+    url: "/work/knotcms",
+    siteName: site.brand,
     type: "article",
   },
+  twitter: {
+    card: "summary",
+    title: pageTitle,
+    description: pageDescription,
+  },
 };
+
+function DataTable({
+  columns,
+  rows,
+}: {
+  columns: readonly string[];
+  rows: readonly (readonly string[])[];
+}) {
+  return (
+    <div className="tile tile-surface overflow-x-auto p-6 sm:p-8">
+      <table className="w-full border-collapse font-mono text-[0.95rem]">
+        <thead>
+          <tr className="border-b border-line">
+            {columns.map((col, i) => (
+              <th
+                key={col || `col-${i}`}
+                scope="col"
+                className="py-3 pr-6 text-left text-[0.62rem] font-bold tracking-[0.14em] text-muted uppercase"
+              >
+                {col}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([label, ...cells]) => (
+            <tr key={label} className="border-b border-line last:border-b-0">
+              <th
+                scope="row"
+                className="py-5 pr-6 text-left font-sans text-[1.05rem] font-bold tracking-tight"
+              >
+                {label}
+              </th>
+              {cells.map((cell, i) => (
+                <td
+                  key={i}
+                  className={`py-5 text-[1.15rem] font-bold ${i < cells.length - 1 ? "pr-6" : ""}`}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 const spec = knotcmsCaseSpec;
 const prose = "max-w-[70ch] text-[1.05rem] leading-[1.7]";
@@ -455,7 +518,7 @@ export default function KnotCmsCaseStudyPage() {
 
         <div className="flex flex-col gap-4">
           <p className="meta-label text-fg">Engineering decision</p>
-          <StepPanel steps={spec.decision} columns={4} outcomeLast />
+          <StepPanel steps={spec.decision} columns={4} outcomeLast sentence />
         </div>
 
         <p className={prose}>{knotcmsCase.theFix.body}</p>
@@ -503,39 +566,19 @@ export default function KnotCmsCaseStudyPage() {
       >
         <FactGrid items={spec.production} className="sm:grid-cols-2 lg:grid-cols-4 lg:[&>div:nth-child(n+2)]:border-t-0 lg:[&>div:nth-child(n+2)]:border-l" />
 
-        <div className="tile tile-surface overflow-x-auto p-6 sm:p-8">
-          <table className="w-full border-collapse font-mono text-[0.95rem]">
-            <thead>
-              <tr className="border-b border-line">
-                {knotcmsCase.numbers.columns.map((col, i) => (
-                  <th
-                    key={col || `col-${i}`}
-                    scope="col"
-                    className="py-3 pr-6 text-left text-[0.62rem] font-bold tracking-[0.14em] text-muted uppercase"
-                  >
-                    {col}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {knotcmsCase.numbers.rows.map((row) => (
-                <tr key={row.label} className="border-b border-line last:border-b-0">
-                  <th
-                    scope="row"
-                    className="py-5 pr-6 text-left font-sans text-[1.05rem] font-bold tracking-tight"
-                  >
-                    {row.label}
-                  </th>
-                  <td className="py-5 pr-6 text-[1.15rem] font-bold">
-                    {row.testedUpTo}
-                  </td>
-                  <td className="py-5 text-[1.15rem] font-bold">{row.time}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          columns={knotcmsCase.traction.columns}
+          rows={knotcmsCase.traction.rows.map((row) => [row.label, row.value])}
+        />
+
+        <p className="max-w-[70ch] text-[0.98rem] leading-[1.7] text-muted">
+          {knotcmsCase.traction.note}
+        </p>
+
+        <DataTable
+          columns={knotcmsCase.numbers.columns}
+          rows={knotcmsCase.numbers.rows.map((row) => [row.label, row.testedUpTo, row.time])}
+        />
 
         <p className="max-w-[70ch] text-[0.98rem] leading-[1.7] text-muted">
           {knotcmsCase.numbers.note}

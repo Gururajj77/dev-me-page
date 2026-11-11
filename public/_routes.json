@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "include": ["/", "/index.html", "/work/knotcms", "/work/knotcms/", "/work/knotcms.html"],
+  "exclude": []
+}

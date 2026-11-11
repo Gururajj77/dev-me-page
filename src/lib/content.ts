@@ -1,9 +1,14 @@
 export const site = {
   name: "Gururaj J",
-  brand: "gururaj.dev",
-  title: "Gururaj J — Frontend Engineer",
+  brand: "jdotgururaj.dev",
+  /** Canonical origin. Every absolute URL on the site is built from this. */
+  url: "https://jdotgururaj.dev",
+  role: "Frontend Platform Engineer | Design Systems & Full-Stack",
+  /** Short form for structured data (JSON-LD jobTitle). */
+  jobTitle: "Frontend Platform Engineer",
+  title: "Gururaj J — Frontend Platform Engineer | Design Systems & Full-Stack",
   description:
-    "Frontend engineer building the component systems other engineers ship on, and the product my customers pay for.",
+    "Frontend platform engineer. I build web platforms for humans and AI agents, own core Carbon Design System components at IBM, and build KnotCMS on my own.",
   location: "Bengaluru, IND",
   timezone: "UTC +05:30",
   links: {
@@ -18,12 +23,12 @@ export const site = {
 } as const;
 
 export const hero = {
-  eyebrow: "Frontend engineer",
+  eyebrow: site.role,
   tagline:
-    "I build the component systems other engineers ship on, and the product my customers pay for.",
-  bio: "Five years in production frontend, the last two on IBM's Carbon Design System, where I own shared components, upgrade paths, and the docs site that decides whether teams adopt them. Alongside that I run KnotCMS, a Notion to Framer sync with paying customers, where I own onboarding, dashboard, billing, and support myself.",
+    "I build web platforms for both humans and AI agents. At IBM I own core Carbon Design System components, and on my own I build full-stack products like KnotCMS.",
+  bio: "Five years of TypeScript and React in production, since 2024 on IBM's Carbon Design System, where I own 4 core components end to end and the docs platform that decides whether teams adopt them. Outside work I build and ship full-stack products on Cloudflare, including KnotCMS, a Notion to Framer sync that won 3 paying customers from 20 signups with zero ad spend.",
   availability:
-    "Open to frontend engineering roles on small teams. Product surfaces, design systems, developer tooling.",
+    "Open to frontend platform, design systems and full-stack product roles.",
   availabilityMeta:
     "Bengaluru or remote · UTC +05:30 · 60-day notice · I reply within a day",
   ctaPrimary: "Start a conversation",
@@ -45,8 +50,8 @@ export const heroStat = {
   meta: "6 major upgrades · 0 unplanned breaking changes",
   secondary: [
     { value: "5,000+", label: "developers served" },
-    { value: "73K", label: "weekly npm consumers" },
-    { value: "85%", label: "test coverage · @carbon/react" },
+    // npm API, @carbon/react: 194,257 downloads for Nov 4–10, 2026.
+    { value: "190K+", label: "weekly npm downloads" },
     { value: "4", label: "core components owned end to end" },
   ],
 } as const;
@@ -56,9 +61,24 @@ export const shipping = {
   product: "KnotCMS",
   productDetail: "billing webhooks",
   status: "Live",
-  lastShipped: "4 days ago",
+  /**
+   * Year-month the item above shipped. Rendered as an absolute month so the
+   * card never goes stale. "billing webhooks" was written up on 1 Aug 2026 as
+   * "4 days ago", so it shipped in July 2026. Update both fields together.
+   */
+  shippedOn: "2026-07",
   stack: "Workers / D1 / Queues",
 } as const;
+
+/** "2026-07" → "Jul 2026". Fixed locale and UTC so server and client agree. */
+export function formatMonth(yearMonth: string) {
+  const [year, month] = yearMonth.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-GB", {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year, month - 1, 1)));
+}
 
 export type FailureStep = {
   label: string;
@@ -87,11 +107,15 @@ export const caseStudies: readonly CaseStudy[] = [
     title: "KnotCMS",
     meta: "Solo product · alongside IBM · since Jun 2026",
     summary:
-      "Notion becomes a Framer CMS, kept in sync. A live product with paying users — auth, billing, webhooks and support are all mine.",
+      "Notion becomes a Framer CMS, kept in sync. Live, with 3 paying customers from 20 signups and zero ad spend. Auth, billing, webhooks and support are all mine.",
     points: [
       {
         label: "Why it matters",
         text: "I have carried a product from idea to invoices, so I understand the cost of the decisions I ask platform teams to make.",
+      },
+      {
+        label: "Traction",
+        text: "3 paying customers from 20 signups, all organic through AEO and the Framer marketplace, zero ad spend.",
       },
       {
         label: "Running now",
@@ -107,13 +131,13 @@ export const caseStudies: readonly CaseStudy[] = [
       },
     ],
     failure: [
-      { label: "Problem", text: "7,000 rows" },
+      { label: "Problem", text: "5,000 rows" },
       { label: "Diagnosis", text: "Workers subrequest fan-out failure" },
-      { label: "Change", text: "Queue-based batched invocations" },
+      { label: "Change", text: "Moved the sync out of the request path" },
+      // TODO(gururaj): add the verified row count once retested above 5,000.
       {
         label: "Outcome",
-        text: "Reliable sync",
-        detail: "tested to 5,000 rows in ~3 min",
+        text: "Rebuilt the sync pipeline on Queues with batched invocations",
       },
     ],
     tags: ["TypeScript", "Workers", "D1", "KV", "Queues", "OAuth", "Webhooks"],
@@ -159,21 +183,23 @@ export type ExperienceRecord = {
   tags: readonly string[];
   /** Evidence. Rendered as small bordered blocks. */
   metrics: readonly string[];
+  /**
+   * Résumé bullets. `stat` is the one fact to scan for, `text` the one-line
+   * explanation under it (both on the tile); `detail` is the résumé wording,
+   * used in the markdown version of the page.
+   */
+  highlights?: readonly {
+    label: string;
+    stat: string;
+    text: string;
+    detail?: string;
+  }[];
   /** Roles that carry the portfolio story get the larger title treatment. */
   emphasis?: boolean;
 };
 
+/** Jobs only. KnotCMS is a project, not a job, and lives in the case study. */
 export const experience: readonly ExperienceRecord[] = [
-  {
-    period: "2026",
-    periodEnd: "present",
-    role: "Founder & engineer",
-    org: "KnotCMS",
-    badge: "concurrent",
-    tags: ["Onboarding", "Dashboard", "Billing", "Support"],
-    metrics: ["Solo", "Production", "Paying customers", "Cloudflare"],
-    emphasis: true,
-  },
   {
     period: "Feb 2024",
     periodEnd: "present",
@@ -182,15 +208,54 @@ export const experience: readonly ExperienceRecord[] = [
     tags: [
       "Components",
       "Documentation",
-      "Navigation",
+      "Agent-readable docs",
+      "Search",
+      "Accessibility automation",
       "Migrations",
       "CI reliability",
     ],
     metrics: [
       "5,000+ developers",
-      "73K weekly consumers",
+      "190K+ weekly npm downloads",
       "3,400+ implementations",
       "4 components owned",
+    ],
+    highlights: [
+      {
+        label: "Agent-readable docs",
+        stat: "any page → .md",
+        text: "Served as markdown via a .md suffix or Accept: text/markdown. Main data source for the team's MCP search server.",
+        detail:
+          "Built AI-agent support for the Carbon docs: any page is served as markdown through a .md URL suffix or Accept: text/markdown content negotiation. The site's content is also the main data source for the team's MCP search server.",
+      },
+      {
+        label: "Docs search",
+        stat: "SSR · URL-based",
+        text: "Built end to end for SEO and fewer client API calls, with keyword tracking in Amplitude and Segment.",
+        detail:
+          "Built the docs search frontend end to end: server-rendered and URL-based for SEO and fewer client API calls, with keyword tracking through Amplitude and Segment.",
+      },
+      {
+        label: "Launch safety",
+        stat: "0 broken redirects",
+        text: "Oct 1 GA cutover: ~400 legacy URLs verified with Playwright, bulk redirects shipped from CSV via Cloudflare.",
+        detail:
+          "Owned the redirect strategy for the Oct 1 GA cutover. Verified about 400 legacy URLs with Playwright and set up the Cloudflare bulk-redirect workflow from CSV to production, with zero broken redirects at launch.",
+      },
+      {
+        label: "Accessibility",
+        stat: "~100 components",
+        text: "Statuses read straight from Playwright output, removing nearly all manual CMS updates. SSO-gated IBM-only data.",
+        detail:
+          "Automated accessibility statuses for about 100 components, read directly from Playwright output in each Carbon package, removing nearly all manual CMS updates. Added edit restrictions and SSO gating for IBM-only data.",
+      },
+      {
+        label: "CI reliability",
+        stat: "2 min → <30s",
+        text: "Rescoped a GitHub Actions cache to Next.js build inputs. Failing PRs dropped from ~80% to under 10%.",
+        detail:
+          "Traced CI failures to a GitHub Actions cache keyed on the whole runner filesystem. Rescoped it to Next.js build inputs, cutting the step from over 2 minutes to under 30 seconds and failing PRs from about 80% to under 10%.",
+      },
     ],
     emphasis: true,
   },
@@ -213,11 +278,19 @@ export const toolkit = {
     "Lit",
     "Design systems",
     "Storybook",
-    "PayloadCMS",
+    "Payload CMS",
   ],
   comfortableLabel: "Reach for",
   comfortableSubtitle: "shipped with",
-  comfortable: ["Next.js", "Cloudflare Workers", "Angular", "MongoDB"],
+  comfortable: [
+    "Next.js",
+    "Cloudflare Workers",
+    "Angular",
+    "MongoDB",
+    "Playwright",
+    "Amplitude",
+    "Segment",
+  ],
   layersLabel: "Layers",
   layers: [
     {
@@ -226,7 +299,19 @@ export const toolkit = {
     },
     {
       label: "Product",
-      items: ["Next.js", "PayloadCMS", "Angular", "REST APIs", "MongoDB"],
+      items: [
+        "Next.js",
+        "Payload CMS",
+        "Angular",
+        "REST APIs",
+        "MongoDB",
+        "Amplitude",
+        "Segment",
+      ],
+    },
+    {
+      label: "Testing",
+      items: ["Playwright"],
     },
     {
       label: "Platform",
@@ -277,11 +362,12 @@ export const knotcmsCase = {
     why: "I chose Workers because the constraint pushed me toward the architecture I'd have needed anyway. A cap on subrequests forces you to batch and queue, and batching gives you retries, resumability and backpressure as a side effect rather than as a later rewrite. The alternative, one long-running process on a container that bills by the hour, would have looked simpler on day one and left me with a sync that fails silently at row 4,000.",
   },
   whereItBroke: {
-    body: "Stress testing surfaced a failure at around 7,000 rows. The cause was subrequest fan-out: a single sync invocation issuing more outbound calls than a Worker invocation is allowed to make.",
+    body: "Stress testing surfaced a failure at around 5,000 rows. The cause was subrequest fan-out: a single sync invocation issuing more outbound calls than a Worker invocation is allowed to make.",
     seen: "What I actually saw was not much. The Cloudflare dashboard showed the requests failing with a CPU limit exceeded error and nothing more specific than that. The error named the limit, not the fan-out behind it.",
   },
   theFix: {
-    body: "Moved the sync out of the webhook request and onto Cloudflare Queues. The handler now verifies the signature, records the event, drops one message and returns in milliseconds, so Notion gets its 200 immediately. A consumer picks the message up in its own invocation with a 15-minute wall-clock budget instead of an HTTP request's, plus retries. A message is one project, not a chunk of rows: the consumer waits out the ten-second quiet window, then pages the Notion database 100 rows at a time and writes to Framer in one remove and one add. The bound moved from an HTTP request to an invocation; it didn't disappear. Tested envelope: 5,000 rows in about three minutes.",
+    body: "Moved the sync out of the webhook request and onto Cloudflare Queues. The handler now verifies the signature, records the event, drops one message and returns in milliseconds, so Notion gets its 200 immediately. A consumer picks the message up in its own invocation with a 15-minute wall-clock budget instead of an HTTP request's, plus retries. A message is one project, not a chunk of rows: the consumer waits out the ten-second quiet window, then pages the Notion database 100 rows at a time and writes to Framer in one remove and one add. The bound moved from an HTTP request to an invocation; it didn't disappear.",
+    // TODO(gururaj): add the verified row count once retested above 5,000.
     subsections: [
       {
         title: "Collapsing bursts, at both ends",
@@ -303,17 +389,27 @@ export const knotcmsCase = {
       {
         title: "Making the wait visible",
         paragraphs: [
-          "The lock was also wrong: it expired after three minutes while a 5,000-row sync takes about three minutes, so two syncs could overlap on the same project. TTL now matches the consumer's 15-minute budget, with release in a finally and the TTL only as a crash net.",
+          "The lock was also wrong: it expired after three minutes, about as long as a large sync takes, so two syncs could overlap on the same project. TTL now matches the consumer's 15-minute budget, with release in a finally and the TTL only as a crash net.",
           "The last piece is UI. A coalescing flag is invisible internal state, and invisible state is how the original bug survived. So the project card now shows a yellow callout while a follow-up is queued: “New Notion edit queued during the run”, or “A Notion edit is waiting” if a crashed run left a flag behind. Both clear themselves on the next poll.",
           "That's the part worth keeping from all of this. The queue change was architecture. The callout is the reason a user can tell the difference between working and stuck.",
         ],
       },
     ],
   },
+  traction: {
+    columns: ["", "Count"],
+    rows: [
+      { label: "Signups", value: "20" },
+      { label: "Ran a real sync", value: "5" },
+      { label: "Paid", value: "3" },
+    ],
+    note: "All organic, through AEO and the Framer marketplace, with zero ad spend. 5 of the 20 ran a real sync, and 3 of those 5 paid. I held back feature work until usage justified it.",
+  },
   numbers: {
     columns: ["", "Tested up to", "Time at that size"],
+    // TODO(gururaj): add the verified row count once retested above 5,000.
+    // The first-sync row was removed: its tested size contradicted the failure story.
     rows: [
-      { label: "First sync", testedUpTo: "5,000 rows", time: "~3 min" },
       {
         label: "Auto sync",
         testedUpTo: "3,000 rows per trigger",
@@ -343,7 +439,7 @@ export const knotcmsCase = {
       },
       {
         title: "Instrument the sync before stress testing it",
-        body: "When the 7,000-row sync failed, the dashboard told me a limit had been exceeded and nothing else. I had to work out the fan-out from first principles. A sync that logs rows read, subrequests made and time spent would have named the problem in one line. The lock TTL was the same mistake in miniature: I set it to three minutes because it sounded reasonable, and a 5,000-row sync takes about three minutes. Limits should come from measured numbers, not round ones.",
+        body: "When the 5,000-row sync failed, the dashboard told me a limit had been exceeded and nothing else. I had to work out the fan-out from first principles. A sync that logs rows read, subrequests made and time spent would have named the problem in one line. The lock TTL was the same mistake in miniature: I set it to three minutes because it sounded reasonable, and a large sync takes about that long. Limits should come from measured numbers, not round ones.",
       },
     ],
   },
@@ -357,7 +453,7 @@ export const knotcmsCase = {
 export const knotcmsCaseSpec = {
   systemLabel: "Case study · System 01",
   route: "Notion → Framer CMS",
-  tags: ["Live product", "Solo built", "Paying customers"],
+  tags: ["Live product", "Solo built", "3 paying customers"],
   facts: [
     { label: "Status", value: "Live", live: true },
     { label: "Role", value: "Founder / engineer" },
@@ -400,7 +496,7 @@ export const knotcmsCaseSpec = {
   ],
   whyWorkersLabel: "Decision — why Workers",
   failure: {
-    headline: "7,000 rows",
+    headline: "5,000 rows",
     sub: "Workers subrequest fan-out failure",
     sequence: [
       {
@@ -413,7 +509,7 @@ export const knotcmsCaseSpec = {
       },
       {
         label: "Impact",
-        text: "Stress testing surfaced the failure at around 7,000 rows. The error named the limit, not the fan-out behind it.",
+        text: "Stress testing surfaced the failure at around 5,000 rows. The error named the limit, not the fan-out behind it.",
       },
     ],
   },
@@ -433,12 +529,16 @@ export const knotcmsCaseSpec = {
   decision: [
     { label: "Decision", text: "Move sync work out of request fan-out" },
     { label: "Constraint", text: "Workers subrequest limit" },
-    { label: "Change", text: "Queues + batched invocations" },
-    { label: "Result", text: "Reliable sync" },
+    { label: "Change", text: "Webhook enqueues, a consumer runs the sync" },
+    // TODO(gururaj): add the verified row count once retested above 5,000.
+    {
+      label: "Outcome",
+      text: "Rebuilt the sync pipeline on Queues with batched invocations",
+    },
   ],
   production: [
     { label: "Status", value: "Live", live: true },
-    { label: "Usage", value: "Paying users" },
+    { label: "Customers", value: "3 paying, from 20 signups" },
     { label: "Billing", value: "Subscriptions, self-service" },
     { label: "Sync", value: "Production" },
   ],

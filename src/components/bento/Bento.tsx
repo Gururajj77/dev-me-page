@@ -13,6 +13,7 @@ import {
   caseStudies,
   contact,
   experience,
+  formatMonth,
   hero,
   heroStat,
   knotcmsCaseSpec,
@@ -117,7 +118,7 @@ function CarbonTile({ index }: { index: number }) {
         <p className="font-mono text-[0.72rem] text-muted">{heroStat.meta}</p>
       </div>
 
-      <dl className="grid grid-cols-2 gap-2">
+      <dl className="grid grid-cols-2 gap-2 [&>div:last-child:nth-child(odd)]:col-span-2">
         {heroStat.secondary.map((stat) => (
           <div
             key={stat.label}
@@ -136,35 +137,90 @@ function CarbonTile({ index }: { index: number }) {
 
 /* ---------- Experience ---------- */
 
+/** "5,000+ developers" → ["5,000+", "developers"]; non-numeric metrics stay whole. */
+function splitMetric(metric: string): [string, string] {
+  const match = metric.match(/^([~<>]?[\d.,]+[A-Za-z+%]*)\s+(.*)$/);
+  return match ? [match[1], match[2]] : ["", metric];
+}
+
 function ExperienceTile({ index }: { index: number }) {
+  const since = experience.at(-1)?.period.split(" ").pop();
+
   return (
     <section
       aria-labelledby="experience-label"
-      className={tileClass("white", "2x2", "gap-4 p-4")}
+      className={tileClass("white", "2x3", "gap-4 p-4")}
       style={order(index)}
     >
-      <h2 id="experience-label" className="meta-label">
-        Experience
-      </h2>
-      <ol className="flex flex-1 flex-col">
-        {experience.map((job) => (
-          <li
-            key={job.org}
-            className="flex flex-col border-t border-line py-3 first:border-t-0 first:pt-0 last:pb-0"
-          >
-            <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-              <p className="text-[0.95rem] leading-[1.4] font-semibold">{job.role}</p>
-              <p className="font-mono text-[0.72rem] text-muted">
-                {job.period} — {job.periodEnd}
-              </p>
-            </div>
-            <p className="text-[0.85rem] leading-[1.45] text-fg">
-              {job.org}
-              {job.badge ? <span className="text-muted"> · {job.badge}</span> : null}
-            </p>
-            <p className="text-[0.8rem] leading-[1.45] text-muted">{job.metrics.join(" · ")}</p>
-          </li>
-        ))}
+      <div className="flex items-center justify-between gap-3">
+        <h2 id="experience-label" className="meta-label">
+          Experience
+        </h2>
+        <p className="meta-label">
+          {experience.length} roles{since ? ` · since ${since}` : null}
+        </p>
+      </div>
+
+      <ol className="flex flex-1 flex-col gap-4">
+        {experience.map((job) => {
+          const current = job.periodEnd === "present";
+          return (
+            <li
+              key={job.org}
+              className="flex flex-col gap-3 border-t border-line pt-4 first:border-t-0 first:pt-0"
+            >
+              <div className="flex flex-col">
+                <div className="flex flex-wrap items-center justify-between gap-x-3">
+                  <h3 className="text-[1rem] leading-[1.4] font-semibold">{job.role}</h3>
+                  <p className="flex items-center gap-2 font-mono text-[0.72rem] text-muted">
+                    {current ? <span className="status-dot live-dot" aria-hidden /> : null}
+                    {job.period} — {job.periodEnd}
+                  </p>
+                </div>
+                <p className="text-[0.85rem] leading-[1.45] text-muted">
+                  {job.org}
+                  {job.badge ? <> · {job.badge}</> : null}
+                </p>
+              </div>
+
+              <ul
+                className="flex flex-wrap gap-x-3 gap-y-2 font-mono text-[0.72rem] leading-[1.3]"
+                aria-label={`${job.org}, key numbers`}
+              >
+                {job.metrics.map((metric) => {
+                  const [value, label] = splitMetric(metric);
+                  return (
+                    <li key={metric} className="text-muted">
+                      {value ? <span className="font-medium text-fg">{value} </span> : null}
+                      {label}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {job.highlights?.length ? (
+                <ul className="flex flex-col rounded-2xl bg-soft">
+                  {job.highlights.map((item) => (
+                    <li
+                      key={item.label}
+                      className="flex flex-col border-t border-line px-3 py-2 first:border-t-0"
+                    >
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                        <h4 className="meta-label">{item.label}</h4>
+                        <p className="font-mono text-[0.72rem] leading-[1.3] font-medium whitespace-nowrap text-fg">
+                          {item.stat}
+                        </p>
+                      </div>
+                      <p className="text-[0.8rem] leading-[1.45] text-pretty text-muted">
+                        {item.text}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </li>
+          );
+        })}
       </ol>
     </section>
   );
@@ -304,7 +360,8 @@ export function Bento() {
           }
           sub={
             <>
-              {shipping.status} · {shipping.lastShipped}
+              {shipping.status} · shipped{" "}
+              <time dateTime={shipping.shippedOn}>{formatMonth(shipping.shippedOn)}</time>
               <span className="block font-mono text-[0.72rem]">{shipping.stack}</span>
             </>
           }

@@ -10,6 +10,7 @@ const sizes = {
   "1x2": "col-span-1 row-span-2",
   "2x1": "col-span-2 row-span-1",
   "2x2": "col-span-2 row-span-2",
+  "2x3": "col-span-2 row-span-3",
 } as const;
 
 export type TileSize = keyof typeof sizes;
